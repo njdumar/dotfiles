@@ -2,8 +2,8 @@
 
 " Create the project. This creates the ctags and cscope files 
 " needed by everything
-map <F8> :cs kill -1<CR> 
-        \:!~/super_sync/start_project.sh `pwd` <CR> 
+map <F8> :cs kill -1<CR>
+        \:!~/dotfiles/start_project.sh `pwd` <CR> 
         \:cs add cscope.out<CR> 
 
 let g:NERDTreeWinSize = 25

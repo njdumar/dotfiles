@@ -182,7 +182,19 @@ nnoremap <A-Left>  :tabprevious<CR>
 inoremap <A-Right> <ESC>:tabnext<CR>
 inoremap <A-Left>  <ESC>:tabprevious<CR>
 
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+            \gvy/<C-R><C-R>=substitute(
+            \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+            \gV:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+            \gvy?<C-R><C-R>=substitute(
+            \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+            \gV:call setreg('"', old_reg, old_regtype)<CR>
 "Windows GVim settings
+
 if has("gui_running")
   source ~/.vim/config/gui.vim
 endif  "end of if has gui_running

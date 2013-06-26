@@ -17,8 +17,8 @@ Installation (linux):
 4. Get all the vundle plugins 
     - Open vim, :BundleInstall
 
-5. Set up YouCompleteMe
-    - Get vim 7.3.584 or later (may need to comile vim yourself https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-sourcea)
+5. Set up YouCompleteMe (Linux)
+    - Get vim 7.3.584 or later (may need to comile vim yourself https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source)
     - cd ~/repo_dir/.vim/bundle/YouCompleteMe
     - ./Install.sh
 
@@ -47,7 +47,7 @@ Remember:
     - bufexplorer
     - Xterm-color-table
     - Vundle (vim plugin manager)
-    - YouCompleteMe (You proabably have to recompile ymc for it to work with you arch)
+    - YouCompleteMe
 
 
 5. Most of these plugins requires ctags and cscope to be installed
