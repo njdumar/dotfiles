@@ -1,0 +1,52 @@
+[user]
+    name = Nathan Dumar
+    email = njdumar@gmail.com
+[diff]
+    tool=kdiff3
+[merge]
+    tool=kdiff3
+[mergetool "kdiff3"]
+    path = kdiff3
+[difftool "kdiff3"]
+    path = kdiff3
+[alias]
+    lg1 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) \
+          %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit \
+          --date=relative
+
+    lg2 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
+          %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) \
+          %C(bold white)— %an%C(reset)' --abbrev-commit
+
+    lg3 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
+          %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) \
+          %C(bold white)— %an%C(reset)' --abbrev-commit --first-parent
+
+    lg4 = log --graph --color --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
+          %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) \
+          %C(bold white)— %an%C(reset)' --abbrev-commit
+
+    pullall = !git pull && git submodule update --recursive --init
+    mergenff = merge --no-ff
+    unstage = reset HEAD
+    uncommit = reset --soft HEAD^
+    verify = !sudo ~/dotfiles/git_check.rb
+    recur = !sudo ~/dotfiles/git-submodule-recur.sh
+    svndiff = diff --no-prefix
+    svn-diff = !~/dotfiles/git-svn-diff.sh
+    oldest-ancestor = !zsh -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-master}\") \
+                      <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
+[core]
+    fileMode = false
+
+    # Create svn compatible patch: git diff --no-prefix > ~/someFeature.diff
+    # or use the git-svn-diff.sh script to add in the svn revision numbers to the patch. 
+    # eg. 'git svn-diff remotes/trunk branchName > someFeature.patch' where branchName is the tip of you local
+    # branch (not in svn) and remotes/trunk is the base of your branch (exists in svn).
+    #
+    # To apply to svn: patch -p0 < ~/someFeature.diff
+    # If your files has mixed/unix line endings but the wirking copy is dos, convert the entire patch file
+    # to dos format (unix2dos filename) and apply the patch. Treat it like a binary
+    # so that is doesn't strip the CRs: patch -p0 --binary < ~/someFeature.patch
+    #
+    # rebase onto: rebase --onto destinationBranch CurrentBranchBase branchToMove 
