@@ -2,8 +2,14 @@
 
 " Create the project. This creates the ctags and cscope files 
 " needed by everything
+"map <F8> :cs kill -1<CR>
+"        \:!~/dotfiles/start_project.sh `pwd` <CR> 
+"        \:cs add cscope.out<CR> 
+
 map <F8> :cs kill -1<CR>
-        \:!~/dotfiles/start_project.sh `pwd` <CR> 
+        \:!find . -iname '*.dat' -o -iname '*.tcl' -o -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hh' -o -iname '*.hpp' -o -iname '*.inc' -o -iname '*.asm' -o -iname '*.ipp' -o -iname '*.s'  -o -iname '*.spp'> cscope.files<CR>
+        \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --exclude=\"\.svn\" --exclude=\"examples\" --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
+        \:!cscope -b -i cscope.files -f cscope.out<CR>
         \:cs add cscope.out<CR> 
 
 let g:NERDTreeWinSize = 25

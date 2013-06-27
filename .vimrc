@@ -138,7 +138,7 @@ function! Match_long_lines()
   if s:longlines == 1
     let s:longlines = 0
     :match ExtraWhitespace /\s\+$\|\t/
-    :2match ErrorMsg '\%>120v.\+'
+    :2match ErrorMsg '\%>132v.\+'
   else
     let s:longlines = 1
     :match
