@@ -22,21 +22,21 @@ set t_Co=256
 
 syntax on
 set hlsearch
-highlight Normal guibg=#121212 guifg=gray ctermbg=233 ctermfg=gray
-highlight Search guibg=gray guifg=black ctermbg=gray ctermfg=black
-highlight LineNr guifg=#5A5A5A ctermfg=238
-highlight Constant guifg=White ctermfg=White
-highlight Statement gui=NONE guifg=Yellow cterm=NONE ctermfg=Yellow
-highlight Identifier guifg=#5faf5f ctermfg=71
-highlight Function guifg=#00afaf ctermfg=37
-highlight PreProc guifg=Orange ctermfg=214
-highlight Type gui=NONE guifg=#5fd75f cterm=NONE ctermfg=77
-highlight Special guifg=#af5f5f ctermfg=131
-highlight Comment guifg=#5f5faf ctermfg=61
-highlight Directory guifg=#5f5faf ctermfg=61
-highlight CursorLine cterm=NONE guibg=#1c1c1c ctermbg=234
-highlight CursorColumn cterm=NONE guibg=#1c1c1c ctermbg=234
-highlight Braces guifg=#af5f5f ctermfg=131
+highlight Normal     guibg=#121212  guifg=gray    ctermbg=233   ctermfg=gray
+highlight Search     guibg=gray     guifg=black   ctermbg=gray  ctermfg=black
+highlight LineNr     guifg=#5A5A5A  ctermfg=238
+highlight Constant   guifg=White    ctermfg=White
+highlight Statement  gui=NONE       guifg=Yellow  cterm=NONE    ctermfg=Yellow
+highlight Identifier guifg=#5faf5f  ctermfg=71
+highlight Function   guifg=#00afaf  ctermfg=37
+highlight PreProc    guifg=Orange   ctermfg=214
+highlight Type       gui=NONE       guifg=#5fd75f cterm=NONE    ctermfg=77
+highlight Special    guifg=#af5f5f  ctermfg=131
+highlight Comment    guifg=#5f5faf  ctermfg=61
+highlight Directory  guifg=#5f5faf  ctermfg=61
+highlight Braces     guifg=#af5f5f  ctermfg=131
+highlight CursorLine cterm=NONE     guibg=#1c1c1c ctermbg=234
+highlight CursorColumn cterm=NONE   guibg=#1c1c1c ctermbg=234
 
 highlight Cursor guibg=white guifg=black
 highlight iCursor guibg=white guifg=black
@@ -44,6 +44,11 @@ set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver25-iCursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkwait10
+
+highlight DiffAdd    ctermfg=White   ctermbg=DarkGreen
+highlight DiffDelete ctermfg=DarkRed ctermfg=DarkRed
+highlight DiffChange ctermfg=White   ctermbg=DarkBlue
+highlight DiffText   ctermbg=Yellow
 
 " Color references
 if 0

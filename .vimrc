@@ -4,8 +4,8 @@ filetype off
 filetype plugin indent on
 
 " Custom colorscheme and other vim configurations 
-source ~/.vim/config/ide.vim
 :colorscheme natecolors
+source ~/.vim/config/ide.vim
 
 "set the editor to act like vim rather than vi
 set nocompatible
@@ -78,19 +78,20 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'gregsexton/MatchTag.git'
-Bundle 'corntrace/bufexplorer.git'
 Bundle 'mbbill/undotree'
 Bundle 'guns/xterm-color-table.vim.git'
+Bundle 'airblade/vim-gitgutter.git'
+Bundle 'tpope/vim-fugitive'
 
 " ------------- General checks ------------------
 
-if filereadable(glob("~/.vimrc_HITACHI.vim"))
+if filereadable(glob("~/work.vim"))
     let work = "true"
-    source ~/.vimrc_HITACHI.vim
+    source ~/work.vim
 else
-    if filereadable($VIM . "/.vimrc_HITACHI.vim")
+    if filereadable($VIM . "/work.vim")
         let work = "true"
-        source $VIM/.vimrc_HITACHI.vim
+        source $VIM/work.vim
     else
         let work = "false"
     endif
@@ -117,6 +118,10 @@ if work == "true"
     au BufRead *.dis :call HighlightCodeDis()
     au BufRead *.*sym :call HighlightCodeSym()
 endif
+
+" Resource vimrc whenever it gets modified. However, it doesn't play well with
+" highlightTypes() for some reason, so I'll fix it later.
+" au! BufWritePost $MYVIMRC source $MYVIMRC
 
 "---------------------------Vim Functions/Mappings-----------------------------
 "These functions will work with Vim and GVim
@@ -156,6 +161,9 @@ noremap <F4> :set hls!<CR>
 map <F5> :%!xxd<cr>a
 map! <F5> <Esc>:%!xxd -r<cr>
 
+" Opens of the buffer explorer
+noremap <F6> :BufExplorer<CR>
+
 " Open up a newtab
 map <F7> :browse tabnew<CR>
 
@@ -193,8 +201,29 @@ vnoremap <silent> # :<C-U>
             \gvy?<C-R><C-R>=substitute(
             \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
             \gV:call setreg('"', old_reg, old_regtype)<CR>
-"Windows GVim settings
 
+"define 3 custom highlight groups
+hi User1 ctermbg=gray ctermfg=black   guibg=gray guifg=black
+hi User2 ctermbg=gray   ctermfg=56  guibg=gray   guifg=darkblue
+hi User3 ctermbg=blue  ctermfg=green guibg=blue  guifg=green
+
+set statusline=%1*     "switch to user1 colors
+set statusline+=%f       "tail of the filename
+set statusline+=%m      "modified flag
+set statusline+=\ [%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%r      "read only flag
+set statusline+=%2*     "switch to user2 colors
+set statusline+=\ %{fugitive#statusline()}
+set statusline+=%1*     "switch to user1 colors
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+set laststatus=2
+
+"Windows GVim settings
 if has("gui_running")
   source ~/.vim/config/gui.vim
 endif  "end of if has gui_running

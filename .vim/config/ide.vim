@@ -19,6 +19,13 @@ let Tlist_Ctags_Cmd = "/usr/bin/ctags"
 let Tlist_WinWidth = 30
 map <F10> :TlistToggle \| :silent NERDTreeMirror<CR>
 
+map <F11> :TagbarToggle <CR>
+
+"========================= PluginColors ==========================
+
+" Turn off the column highlighting for the vim-gitgutter plugin
+highlight clear SignColumn
+
 "========================= YCM ===============================
 
 " This is the default, I just put it here for my own reference
@@ -91,6 +98,7 @@ if has("cscope")
 
     " add any cscope database in current directory
     if filereadable("cscope.out")
+        cs kill -1
         cs add cscope.out
     " else add the database pointed to by environment variable
     elseif $CSCOPE_DB != ""
