@@ -3,6 +3,12 @@ dotfiles
 
 This is a collection of configuration files, scripts, and vim plugins that I got tired of copying from machine to machine.
 
+Prerequisites
+------------
+- Get vim 7.3.584 or later that has been compiled with python support for YCM to work correctly
+    (may need to compile vim yourself https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source)
+- Install Excuberant-tags and Cscope
+
 Installation (linux):
 -------------
 
@@ -18,7 +24,6 @@ Installation (linux):
     - Open vim, :BundleInstall
 
 5. Set up YouCompleteMe (Linux)
-    - Get vim 7.3.584 or later (may need to comile vim yourself https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source)
     - cd ~/repo_dir/.vim/bundle/YouCompleteMe
     - ./Install.sh
 
@@ -50,9 +55,7 @@ Remember:
     - YouCompleteMe
 
 
-5. Most of these plugins requires ctags and cscope to be installed
-
-6. For the guide to installing YCM:
+5. For the guide to installing YCM:
    https://github.com/Valloric/YouCompleteMe
 
-7. I am currently using YCM without clang support and instead using OmniCppComplete.
+6. I am currently using YCM without clang support and instead using OmniCppComplete.
