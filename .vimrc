@@ -185,10 +185,10 @@ noremap <C-j> <C-W>j
 noremap <C-h> <C-W>h
 
 "Alt-Arrow is next(or previous tab
-nnoremap <A-Right> :tabnext<CR>
-nnoremap <A-Left>  :tabprevious<CR>
-inoremap <A-Right> <ESC>:tabnext<CR>
-inoremap <A-Left>  <ESC>:tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+nnoremap <C-Left>  :tabprevious<CR>
+inoremap <C-Right> <ESC>:tabnext<CR>
+inoremap <C-Left>  <ESC>:tabprevious<CR>
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>

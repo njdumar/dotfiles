@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import re, sys, getopt
+import os
+from subprocess import call
 
 # Take a list of svn repository directories:
 # svn list --depth infinity <full url> | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > smr6_list.txt
@@ -17,9 +19,10 @@ def main(argv):
     outputfile = ''
     svn = ''
     url = ''
+    generate = False
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:s:u:",["ifile=","ofile=","svn=","url="])
+        opts, args = getopt.getopt(argv,"hi:o:s:u:g:",["ifile=","ofile=","svn=","url=","generate="])
     except getopt.GetoptError:
         print 'test.py -i <inputfile> -o <outputfile> -s <svn name>'
         sys.exit(2)
@@ -36,9 +39,16 @@ def main(argv):
             svn = arg
         elif opt in ("-u", "--url"):
             url = arg
+        elif opt in ("-g", "--generate"):
+            generate = arg
 
     #print 'Input file is "', inputfile
     #print 'Output file is "', outputfile
+    #call(["svn", "list", "--depth", "infinity", ])
+    if generate:
+        os.system("svn list --depth infinity " + url + "/" + svn + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile)
+        print "svn list --depth infinity " + url + "/" + svn + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile
+        exit(0)
 
     f = open(inputfile)
     inputFile = f.readlines()
@@ -93,7 +103,7 @@ def main(argv):
     print "    symlinks = false"
     print "    ignorecase = true"
     print "[svn-remote \"svn\"]"
-    print "    url = " + url + svn
+    print "    url = " + url +"/" + svn
     print "    fetch = trunk:refs/remotes/" + svn + "/trunk"
     print "    tags = tags/*:refs/remotes/" + svn + "/tags/*"
     print "    branches = rel_branches/*:refs/remotes/" + svn + "/rel_branches/*"
