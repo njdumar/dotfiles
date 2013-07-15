@@ -52,7 +52,7 @@ let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
 let OmniCpp_ShowAccess          = 1 "show access in pop-up
 let OmniCpp_SelectFirstItem     = 0 "do not select first item in pop-up
 set completeopt=menuone,menu,longest
-au BufNewFile,BufRead,BufEnter *.cpp,*.hpp set omnifunc=omni#cpp#complete#Main
+au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.ipp set omnifunc=omni#cpp#complete#Main
 
 "========================= cTags =============================
 

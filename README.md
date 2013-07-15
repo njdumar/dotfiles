@@ -24,8 +24,8 @@ Installation (linux):
     - Open vim, :BundleInstall
 
 5. Set up YouCompleteMe (Linux)
-    - cd ~/repo_dir/.vim/bundle/YouCompleteMe
-    - ./Install.sh
+    - cd ~/dotfiles/.vim/bundle/YouCompleteMe
+    - ./install.sh
 
 6. Add .bash_aliases to your regular .bashrc/.bash_profile/whatever to source it
 
