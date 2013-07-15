@@ -33,7 +33,7 @@ let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.'],
   \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'cpp,objcpp,ipp' : ['->', '.', '::'],
   \   'perl' : ['->'],
   \   'php' : ['->', '::'],
   \   'cs,java,javascript,d,vim,python,perl6,scala,vb,elixir,go' : ['.'],
@@ -43,18 +43,19 @@ let g:ycm_semantic_triggers =  {
   \ }
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_collect_identifiers_from_tags_files = 0
 
 "=================== OmniCppComplete =========================
 
-"set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
-"let OmniCpp_GlobalScopeSearch   = 1
-"let OmniCpp_DisplayMode         = 1
-"let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
-"let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
-"let OmniCpp_ShowAccess          = 1 "show access in pop-up
-"let OmniCpp_SelectFirstItem     = 0 "do not select first item in pop-up
-"set completeopt=menuone,menu,longest
-"au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.ipp set omnifunc=omni#cpp#complete#Main
+set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
+let OmniCpp_GlobalScopeSearch   = 1
+let OmniCpp_DisplayMode         = 1
+let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
+let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
+let OmniCpp_ShowAccess          = 1 "show access in pop-up
+let OmniCpp_SelectFirstItem     = 0 "do not select first item in pop-up
+set completeopt=menuone,menu,longest
+au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.ipp set omnifunc=omni#cpp#complete#Main
 
 "========================= cTags =============================
 
