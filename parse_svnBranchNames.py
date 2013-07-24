@@ -17,7 +17,7 @@ def main(argv):
 
     inputfile = ''
     outputfile = ''
-    svn = ''
+    svn = list()
     url = ''
     generate = False
 
@@ -36,7 +36,7 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputfile = arg
         elif opt in ("-s", "--svn"):
-            svn = arg
+            svn.append(arg)
         elif opt in ("-u", "--url"):
             url = arg
         elif opt in ("-g", "--generate"):
@@ -46,8 +46,12 @@ def main(argv):
     #print 'Output file is "', outputfile
     #call(["svn", "list", "--depth", "infinity", ])
     if generate:
-        os.system("svn list --depth infinity " + url + "/" + svn + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile)
-        print "svn list --depth infinity " + url + "/" + svn + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile
+
+        for svnRepo in svn:
+
+            os.system("svn list --depth infinity " + url + "/" + svnRepo + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile)
+            print "svn list --depth infinity " + url + "/" + svnRepo + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > " + inputfile
+
         exit(0)
 
     f = open(inputfile)
@@ -95,18 +99,19 @@ def main(argv):
     branchDir.append(base)
     branchNames.append(entry)
 
-    print "[core]"
-    print "    repositoryformatversion = 0"
-    print "    filemode = false "
-    print "    bare = false "
-    print "    logallrefupdates = true"
-    print "    symlinks = false"
-    print "    ignorecase = true"
-    print "[svn-remote \"svn\"]"
-    print "    url = " + url +"/" + svn
-    print "    fetch = trunk:refs/remotes/" + svn + "/trunk"
-    print "    tags = tags/*:refs/remotes/" + svn + "/tags/*"
-    print "    branches = rel_branches/*:refs/remotes/" + svn + "/rel_branches/*"
+    for svnRepo in svn:
+        print "[core]"
+        print "    repositoryformatversion = 0"
+        print "    filemode = false "
+        print "    bare = false "
+        print "    logallrefupdates = true"
+        print "    symlinks = false"
+        print "    ignorecase = true"
+        print "[svn-remote \"svn\"]"
+        print "    url = " + url +"/" + svnRepo
+        print "    fetch = trunk:refs/remotes/" + svnRepo + "/trunk"
+        print "    tags = tags/*:refs/remotes/" + svnRepo + "/tags/*"
+        print "    branches = rel_branches/*:refs/remotes/" + svnRepo + "/rel_branches/*"
 
     for index, line in enumerate(branchDir):
         print "#    branches = " + line + "{" + branchNames[index] + "}:refs/remotes/" + svn + "/" + line + "*"

@@ -7,9 +7,12 @@
 "        \:cs add cscope.out<CR> 
 
 map <F8> :cs kill -1<CR>
+        \:!echo "Find Files"<CR>
         \:!find . -iname '*.dat' -o -iname '*.tcl' -o -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hh' -o -iname '*.hpp' -o -iname '*.inc' -o -iname '*.asm' -o -iname '*.ipp' -o -iname '*.s'  -o -iname '*.spp'> cscope.files<CR>
-        \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --exclude=\"\.svn\" --exclude=\"examples\" --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
-        \:!cscope -b -i cscope.files -f cscope.out<CR>
+        \:!echo "Run ctags"<CR>
+        \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
+        \:!echo "Run cscope"<CR>
+        \:cscope -b -i cscope.files -f cscope.out<CR>
         \:cs add cscope.out<CR> 
 
 let g:NERDTreeWinSize = 25
@@ -19,6 +22,7 @@ let Tlist_Ctags_Cmd = "/usr/bin/ctags"
 let Tlist_WinWidth = 30
 map <F10> :TlistToggle \| :silent NERDTreeMirror<CR>
 
+let g:tagbar_left = 1
 map <F11> :TagbarToggle <CR>
 
 "========================= PluginColors ==========================
@@ -29,6 +33,8 @@ highlight clear SignColumn
 "========================= YCM ===============================
 
 " This is the default, I just put it here for my own reference
+" I'm not actually using YCM for its clang complete, it's just too 
+" much of a pain in the ass to get working correctly for large, complex code
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.'],

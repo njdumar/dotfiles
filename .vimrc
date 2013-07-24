@@ -82,6 +82,7 @@ Bundle 'mbbill/undotree'
 Bundle 'guns/xterm-color-table.vim.git'
 Bundle 'airblade/vim-gitgutter.git'
 Bundle 'tpope/vim-fugitive'
+Bundle 'kshenoy/vim-signature'
 
 " ------------- General checks ------------------
 
@@ -162,18 +163,20 @@ map <F5> :%!xxd<cr>a
 map! <F5> <Esc>:%!xxd -r<cr>
 
 " Opens of the buffer explorer
-noremap <F6> :BufExplorer<CR>
+" noremap <F6> :BufExplorer<CR>
 
 " Open up a newtab
 map <F7> :browse tabnew<CR>
 
-"c++, python style comment
+"c++, python, vimscript style comment
 map ,/ :s/^/\/\//<CR> :/asdfasdf<CR>
 map ,# :s/^/#/<CR> :/asdfasdf<CR>
+map ," :s/^/"/<CR> :/asdfasdf<CR>
 
-"c++, python style uncomment
+"c++, python, vimscript style uncomment
 map ./ :s/\/\///<CR> :/asdfasdf<CR>
 map .# :s/#//<CR> :/asdfasdf<CR>
+map ." :s/"//<CR> :/asdfasdf<CR>
 
 " Easier to hit then ESC
 inoremap qq <Esc>
@@ -184,7 +187,7 @@ noremap <C-k> <C-W>k
 noremap <C-j> <C-W>j
 noremap <C-h> <C-W>h
 
-"Alt-Arrow is next(or previous tab
+"CTRL-Arrow is next(or previous tab
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <C-Left>  :tabprevious<CR>
 inoremap <C-Right> <ESC>:tabnext<CR>
