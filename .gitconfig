@@ -10,45 +10,59 @@
 [difftool "kdiff3"]
     path = kdiff3
 [alias]
-    lg1 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) \
-          %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit \
-          --date=relative
+    # Log of current branch
+    lg1 = log --graph --color --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
+        %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
+        %n''          %C(white)%s%C(reset) ' --abbrev-commit
 
+    # Log of all branches
     lg2 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
         %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
         %n''          %C(white)%s%C(reset) ' --abbrev-commit
 
+    # Log of all branches, first parent for cleaner log
     lg3 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
         %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
         %n''          %C(white)%s%C(reset) ' --abbrev-commit --first-parent
 
-    lg4 = log --graph --color --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
-        %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
-        %n''          %C(white)%s%C(reset) ' --abbrev-commit --first-parent
+    # Log of all branches, one line
+    lg4 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) \
+          %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit \
+          --date=relative
 
     pullall = !git pull && git submodule update --recursive --init
     mergenff = merge --no-ff
     unstage = reset HEAD
     uncommit = reset --soft HEAD^
-    verify = !sudo ~/dotfiles/git_check.rb
-    recur = !sudo ~/dotfiles/git-submodule-recur.sh
     svndiff = diff --no-prefix
     svn-fetch-all = svn fetch --fetch-all
+
+    # Create an svn compatible patch, complete with svn revision info
     svn-diff = !~/dotfiles/git-svn-diff.sh
+
+    # Find where this branch meets master
     oldest-ancestor = !zsh -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-master}\") \
                       <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
+
+    # Find where this branch branched of from any given branch. 'git first-ancestor-with <branch-name>
     first-ancestor-with = !zsh -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-$1}\") \
                       <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
+
+    # Check if the current branch (and all the submodules) are pushed up. The submodules need to be pushed first, so check it
+    verify = !sudo ~/dotfiles/git_check.rb
+
+    # Issue the same command on all submodules
+    recur = !sudo ~/dotfiles/git-submodule-recur.sh
 [core]
     fileMode = false
 
     # Create svn compatible patch: git diff --no-prefix > ~/someFeature.diff
     # or use the git-svn-diff.sh script to add in the svn revision numbers to the patch. 
-    # eg. 'git svn-diff remotes/trunk branchName > someFeature.patch' where branchName is the tip of you local
-    # branch (not in svn) and remotes/trunk is the base of your branch (exists in svn).
+    # eg. 'git svn-diff <svn base> <local branch tip> > someFeature.patch' 
     #
     # To apply to svn: patch -p0 < ~/someFeature.diff
-    # If your files has mixed/unix line endings but the wirking copy is dos, convert the entire patch file
+    #
+    # NOTE: If your files has mixed/unix line endings but the wirking copy is dos, convert the entire patch file
     # to dos format (unix2dos filename) and apply the patch. Treat it like a binary
     # so that is doesn't strip the CRs: patch -p0 --binary < ~/someFeature.patch
     #

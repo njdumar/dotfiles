@@ -1,42 +1,19 @@
-pt-get install  \
-    build-essential \
-    ia32-libs \
-    autoconf \
-    terminator \
-    python \
-    perl \
-    ruby \
-    tcl \
-    firefox \
-    git \
-    git-svn \
-    gitk \
-    arandr \
-    cmake \
-    tree \
-    libncurses5-dev  \
-    libgnome2-dev  \
-    libgnomeui-dev  \
-    libgtk2.0-dev  \
-    libatk1.0-dev  \
-    libbonoboui2-dev \
-    libcairo2-dev  \
-    libx11-dev \
-    libxpm-dev \
-    libxt-dev \
-    python-dev \
-    ruby-dev \
-    mercurial \
-    exuberant-ctags \
-    cscope \
-    zsh \
-    gnome-do
+//--------------------------------------------
+// These are all the packages i usually need
+//--------------------------------------------
+apt-get install build-essential ia32-libs autoconf terminator python \
+    perl ruby tcl firefox git git-svn gitk arandr cmake tree libncurses5-dev  \
+    libgnome2-dev  libgnomeui-dev  libgtk2.0-dev  libatk1.0-dev  libbonoboui2-dev \
+    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev ruby-dev mercurial \
+    exuberant-ctags cscope zsh curl-devel expat-devel gettext-devel openssl-devel \
+    zlib-devel gnome-do
 
+// Build the most recent 7.3.x verion of vim with python support
 sudo apt-get remove vim vim-runtime gvim
 sudo apt-get remove vim-tiny vim-common vim-gui-common
 cd ~
-hg clone https://code.google.com/p/vim/
-cd vim
+hg clone https://code.google.com/p/vim/ vim-source
+cd vim-source
 hg checkout v7-3-1314
 ./configure --with-features=huge \
             --enable-rubyinterp \
@@ -52,6 +29,9 @@ sudo update-alternatives --set editor /usr/bin/vim
 sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
 sudo update-alternatives --set vi /usr/bin/vim
 
+//--------------------------------------------
+// Get a clone our my dotfiles
+//--------------------------------------------
 cd ~
 git clone http://github.com/CaptOfCrush/dotfiles
 cd dotfiles
@@ -60,12 +40,29 @@ git submodule update --init
 cd .vim/bundle/YouCompleteMe
 ./install.sh
 
+//--------------------------------------------
+// Build git from source. Do not uninstall the apt-get git, the bash-completion gets all screws up.
+// Just build the new binary to place on top.
+//--------------------------------------------
+cd ~
+git clone git://git.kernel.org/pub/scm/git/git.git git-source
+cd git-source
+git checkout v1.8.3.4
+make prefix=/usr all
+sudo make prefix=/usr install
+
+//--------------------------------------------
+// Link to all the dotfiles
+//--------------------------------------------
 cd ~
 ln -s dotfiles/.vimrc .vimrc
 ln -s dotfiles/.vim .vim
 ln -s dotfiles/.bash_aliases .bash_aliases
 ln -s dotfiles/.gitfconfig .gitconfig
 
+//--------------------------------------------
+// Update origimall .bashrc to include my aliases
+//--------------------------------------------
 cd ~
 +++++Open .bashrc, add 'source ~/.bash_aliases' to the end
 
