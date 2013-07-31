@@ -56,6 +56,7 @@ def main(argv):
     out.write("    logallrefupdates = true\n")
     out.write("    symlinks = false\n")
     out.write("    ignorecase = true\n")
+    out.write("    autocrlf = false\n")
 
     for svnRepo in svn:
 
