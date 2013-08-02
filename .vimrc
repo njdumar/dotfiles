@@ -83,6 +83,7 @@ Bundle 'guns/xterm-color-table.vim.git'
 Bundle 'airblade/vim-gitgutter.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'kshenoy/vim-signature'
+Bundle 'vim-scripts/git-time-lapse'
 
 " ------------- General checks ------------------
 

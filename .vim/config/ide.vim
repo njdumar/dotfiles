@@ -6,6 +6,8 @@
 "        \:!~/dotfiles/start_project.sh `pwd` <CR> 
 "        \:cs add cscope.out<CR> 
 
+map <F6> :call TimeLapse()<CR>
+
 map <F8> :cs kill -1<CR>
         \:!echo "Find Files"<CR>
         \:!find . -iname '*.dat' -o -iname '*.tcl' -o -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hh' -o -iname '*.hpp' -o -iname '*.inc' -o -iname '*.asm' -o -iname '*.ipp' -o -iname '*.s'  -o -iname '*.spp'> cscope.files<CR>
