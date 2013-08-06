@@ -14,7 +14,7 @@ map <F8> :cs kill -1<CR>
         \:!echo "Run ctags"<CR>
         \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
         \:!echo "Run cscope"<CR>
-        \:cscope -b -i cscope.files -f cscope.out<CR>
+        \:!cscope -b -i cscope.files -f cscope.out<CR>
         \:cs add cscope.out<CR> 
 
 let g:NERDTreeWinSize = 25
