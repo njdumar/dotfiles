@@ -67,6 +67,12 @@ set number
 set cursorline
 set cursorcolumn
 
+" trailing whitespace will be shoen as +'s 
+set list lcs=trail:+
+
+" Underline words inbetween underscores
+" match MyUnderline /_.*_/
+
 " This is required or used for Vundle
 " To install configured bundles, :BundleInstall
 " ------------- Vundle -------------------
@@ -84,6 +90,7 @@ Bundle 'airblade/vim-gitgutter.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-scripts/git-time-lapse'
+Bundle 'vim-scripts/CCTree'
 
 " ------------- General checks ------------------
 
@@ -124,6 +131,9 @@ endif
 " Resource vimrc whenever it gets modified. However, it doesn't play well with
 " highlightTypes() for some reason, so I'll fix it later.
 " au! BufWritePost $MYVIMRC source $MYVIMRC
+
+" Setup tsv rules, we're making a screadsheet
+au BufNewFile,BufRead,BufEnter *.tsv set ft=tsv
 
 "---------------------------Vim Functions/Mappings-----------------------------
 "These functions will work with Vim and GVim
