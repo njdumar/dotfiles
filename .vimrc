@@ -132,8 +132,10 @@ endif
 " highlightTypes() for some reason, so I'll fix it later.
 " au! BufWritePost $MYVIMRC source $MYVIMRC
 
-" Setup tsv rules, we're making a screadsheet
+" Setup tsv rules, we're making a screadsheet. If this is a new file, load the
+" template, starting at line 0
 au BufNewFile,BufRead,BufEnter *.tsv set ft=tsv
+au BufNewFile *.tsv 0r ~/.vim/templates/template.tsv
 
 "---------------------------Vim Functions/Mappings-----------------------------
 "These functions will work with Vim and GVim
