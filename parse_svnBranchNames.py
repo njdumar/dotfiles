@@ -19,14 +19,15 @@ def main(argv):
     generate = False
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:s:u:g",["ifile=","ofile=","svn=","url=","generate="])
+        opts, args = getopt.getopt(argv,"hgi:o:s:u:",["help","generate","ifile=","ofile=","svn=","url="])
     except getopt.GetoptError:
         print 'test.py -i <inputfile> -o <outputfile> -s <svn name>'
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt == '-h':
-            print 'parse_svnBranches.py -i <inputfile> -o <outputfile>  -s <svn name> -u <url>'
+        if opt in ("-h", "--help"):
+            print '\nExample:'
+            print 'parse_svnBranches.py -i <inputfile> -o <outputfile>  -s <svn name> -u <url> -g <something not 0>'
             print '---------------------------------------------------------------------------'
             print '--ifile    -i -> file that contains a list of svn branches from the \'svn list\' command'
             print '--ofile    -o -> .gitconfig output file'
@@ -43,7 +44,7 @@ def main(argv):
         elif opt in ("-u", "--url"):
             url = arg
         elif opt in ("-g", "--generate"):
-            generate = arg
+            generate = True
 
     # create the output
     out = open(outputfile, 'w')
