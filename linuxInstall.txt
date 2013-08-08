@@ -8,7 +8,9 @@ apt-get install build-essential ia32-libs autoconf terminator python \
     exuberant-ctags cscope zsh curl-devel expat-devel gettext-devel openssl-devel \
     zlib-devel gnome-do dos2unix subversion
 
+//--------------------------------------------
 // Build the most recent 7.3.x verion of vim with python support
+//--------------------------------------------
 sudo apt-get remove vim vim-runtime gvim
 sudo apt-get remove vim-tiny vim-common vim-gui-common
 cd ~
@@ -30,13 +32,13 @@ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
 sudo update-alternatives --set vi /usr/bin/vim
 
 //--------------------------------------------
-// Get a clone our my dotfiles
+// Get a clone of my dotfiles
 //--------------------------------------------
 cd ~
 git clone http://github.com/CaptOfCrush/dotfiles
 cd dotfiles
 git submodule update --init
-+++++Open vim, :BundleInstall
+-----> Open vim, :BundleInstall
 cd .vim/bundle/YouCompleteMe
 ./install.sh
 
@@ -59,10 +61,19 @@ ln -s dotfiles/.vimrc .vimrc
 ln -s dotfiles/.vim .vim
 ln -s dotfiles/.bash_aliases .bash_aliases
 ln -s dotfiles/.gitfconfig .gitconfig
+ln -s dotfiles/.fonts .fonts
 
 //--------------------------------------------
 // Update origimall .bashrc to include my aliases
 //--------------------------------------------
 cd ~
-+++++Open .bashrc, add 'source ~/.bash_aliases' to the end
+-----> Open .bashrc, add 'source ~/.bash_aliases' to the end
 
+//--------------------------------------------
+// Install Proggy fonts
+//--------------------------------------------
+---Extract ttfs in proggy tar to /usr/share/fonts/truetype/proggy
+sudo fc-cache -fv
+
+-----> or in home dir, create .fonts and put them there.
+sudo fc-cache -fv
