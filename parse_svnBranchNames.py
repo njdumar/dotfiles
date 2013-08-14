@@ -12,39 +12,52 @@ import subprocess
 
 def main(argv):
 
-    inputfile = ''
+    svnBranchList = ''
     outputfile = ''
     svn = list()
     url = ''
+    ignore = ''
     generate = False
+    inputList = ''
+    cheat = ''
 
     try:
-        opts, args = getopt.getopt(argv,"hgi:o:s:u:",["help","generate","ifile=","ofile=","svn=","url="])
+        opts, args = getopt.getopt(argv,"hgb:o:s:u:i:c:",["help","generate","branches=","ofile=","svn=","url=","ignore="])
     except getopt.GetoptError:
-        print 'test.py -i <inputfile> -o <outputfile> -s <svn name>'
+        print 'parse_svnBranches.py -b <svnBranchList> -o <outputfile>  -s <svn name> -u <url> -i <grep ignore string> -g'
         sys.exit(2)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             print '\nExample:'
-            print 'parse_svnBranches.py -i <inputfile> -o <outputfile>  -s <svn name> -u <url> -g <something not 0>'
+            print 'parse_svnBranches.py -b <svnBranchList> -o <outputfile>  -s <svn name> -u <url> -i <grep ignore string> -g'
             print '---------------------------------------------------------------------------'
-            print '--ifile    -i -> file that contains a list of svn branches from the \'svn list\' command'
+            print '--branches    -b -> file that contains a list of svn branches from the \'svn list\' command'
             print '--ofile    -o -> .gitconfig output file'
             print '--svn      -s -> Name of the svn module (repo)'
             print '--url      -u -> url of the svn repo (minus the repo name/module)'
             print '--generate -g -> If specified, create the input file first'
             exit(0)
-        elif opt in ("-i", "--ifile"):
-            inputfile = arg
+        elif opt in ("-b", "--branches"):
+            svnBranchList = arg
         elif opt in ("-o", "--ofile"):
             outputfile = arg
         elif opt in ("-s", "--svn"):
             svn.append(arg)
         elif opt in ("-u", "--url"):
             url = arg
+        elif opt in ("-i", "--ignore"):
+            ignore = arg
         elif opt in ("-g", "--generate"):
             generate = True
+        elif opt in ("-c"):
+            cheat = arg
+
+    if svnBranchList != '':
+        svnBranches = open(svnBranchList, 'w')
+    else:
+        print "Give me the name of the svn branch list! It can be generated so the file doesn't have to exist (use the generate option)"
+        exit(2)
 
     # create the output
     out = open(outputfile, 'w')
@@ -63,18 +76,14 @@ def main(argv):
 
         if generate:
 
-            svnList = "svn list --depth infinity " + url + "/" + svnRepo + " | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|(\|)\|\.'"
-            output = subprocess.check_output(svnList, shell=True)
+            svnList = "svn list --depth infinity " + url + "/" + svnRepo + " | grep -v '" + ignore + "'"
+            inputList = subprocess.check_output(svnList, shell=True)
 
-            # The reason this is even put into a file in the first place is so that I can analyze the results before the git config is created
-            # There were some issues getting the 'svn list' just right
-            f = open(inputfile, 'w')
-            f.write(output)
-            f.close
-
-        f = open(inputfile)
-        inputFile = f.readlines()
-        f.close
+            inputList = inputList.split('\n');
+        else:
+            cheats = open(cheat, 'r')
+            inputList = cheats.readlines()
+            cheats.close()
 
         extra = list()
         branchDir = list()
@@ -84,17 +93,21 @@ def main(argv):
         first = True
 
         # Search for every real branch, not folders containing branches, and not folders in branches. Just the branches.
-        for index, line in enumerate(inputFile):
-            copy = False 
+        for index, line in enumerate(inputList):
+            copy = False
 
-            # Get the directory of the branch, group(1) and the branch name, group(2)
+            # Get the directory of the branch, group(1), and the branch name, group(2)
             branch = re.search(r'(.*/)(.*)/$', line)
 
-            regex = r".*" + line[:-1] + r".*/.*"
+            # If the script generates the branch list, there are no newline characters at the end to strip out
+            if generate:
+                regex = r".*" + line + r".*/.*"
+            else:
+                regex = r".*" + line[:-1] + r".*/.*"
 
-            if index < len(inputFile) - 1:
+            if index < len(inputList) - 1:
 
-                if re.search(regex, inputFile[index+1]):
+                if re.search(regex, inputList[index+1]):
 
                     # This dir contatins branches, it is not a branch itself. This is saved just so I can look at it if I wanted too
                     extra.append(line)
@@ -116,14 +129,20 @@ def main(argv):
 
                     first = False
 
+                    # Save the name of the branch
+                    svnBranches.write(svnRepo + "/" + branch.group(1) + branch.group(2) + "\n")
+
                 else:
                     entry = entry + "," + branch.group(2)
+
+                    # Save the name of the branch
+                    svnBranches.write(svnRepo + "/" + branch.group(1) + branch.group(2) + "\n")
 
         # Add the last entry (should be the last branch)
         branchDir.append(base)
         branchNames.append(entry)
 
-        out.write("[svn-remote \"svn\"]\n")
+        out.write("[svn-remote \"" + svnRepo + "\"]\n")
         out.write("    url = " + url +"/" + svnRepo + "\n")
         out.write("    fetch = trunk:refs/remotes/" + svnRepo + "/trunk\n")
         out.write("    tags = tags/*:refs/remotes/" + svnRepo + "/tags/*\n")
@@ -132,7 +151,10 @@ def main(argv):
         for index, line in enumerate(branchDir):
             out.write("    branches = " + line + "{" + branchNames[index] + "}:refs/remotes/" + svnRepo + "/" + line + "*\n")
 
-        out.close
+    if svnBranchList != '':
+        svnBranches.close
+
+    out.close
 
 if __name__ == "__main__":
     main(sys.argv[1:])
