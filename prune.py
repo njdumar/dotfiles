@@ -9,15 +9,16 @@ def main(argv):
 
     svnBranches = ''
     gitBranches = ''
-    output = ''
+    deteledBranches = ''
+    newBranches = ''
     directory = ''
     ignoreList = '/tags/'
     dryRun = False
 
     try:
-        opts, args = getopt.getopt(argv,"hs:g:o:d:i:", ["dry-run", "help"])
+        opts, args = getopt.getopt(argv,"hs:g:o:d:i:n:a", ["dry-run", "help"])
     except getopt.GetoptError:
-        print "./prune.py -s <svn list> -g <git list> -d <git directory> -o <output>"
+        print "./prune.py -s <svn list> -g <git list> -d <git directory> -o <deteledBranches> -n <newBranches>"
         sys.exit(2)
 
     for opt, arg in opts:
@@ -30,6 +31,7 @@ def main(argv):
             print '-g -> list of git branches'
             print '-d -> directory containing the git repo you are pruning'
             print '-o -> outoput file containing all the branches being deleted, good for a reference. Optional'
+            print '-n -> outoput file containing all the new branches in the svn repo'
             print '-i -> Inverse grep of what to ignore. default: \'/tags/\''
             exit(0)
         elif opt in ("-s"):
@@ -37,7 +39,9 @@ def main(argv):
         elif opt in ("-g"):
             gitBranches = arg
         elif opt in ("-o"):
-            output = arg
+            deteledBranches = arg
+        elif opt in ("-n"):
+            newBranches = arg
         elif opt in ("-d"):
             directory = arg
         elif opt in ("-i"):
@@ -63,9 +67,22 @@ def main(argv):
     diff = ''.join(diff)
 
     # Save the list of branches to be deleted, either put it in a file or just print it to the screen
-    if output != '':
+    if deteledBranches != '':
 
-        out = open(output, 'w')
+        out = open(deteledBranches, 'w')
+        out.write(diff)
+        out.close
+    else:
+
+        print diff
+
+    diff = list(set(svnList) - set(gitList))
+    diff = ''.join(diff)
+
+    # Save the list of branches that are new, either put it in a file or just print it to the screen
+    if newBranches != '':
+
+        out = open(newBranches, 'w')
         out.write(diff)
         out.close
     else:

@@ -6,7 +6,7 @@ apt-get install build-essential ia32-libs autoconf terminator python \
     libgnome2-dev  libgnomeui-dev  libgtk2.0-dev  libatk1.0-dev  libbonoboui2-dev \
     libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev ruby-dev mercurial \
     exuberant-ctags cscope zsh curl-devel expat-devel gettext-devel openssl-devel \
-    zlib-devel gnome-do dos2unix subversion
+    zlib-devel gnome-do dos2unix subversion samba4 cifs-utils meld
 
 //--------------------------------------------
 // Build the most recent 7.3.x verion of vim with python support
