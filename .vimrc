@@ -143,7 +143,8 @@ au BufNewFile *.tsv 0r ~/.vim/templates/template.tsv
 " Command to recursively search through all source files begining in the
 " folder you started vim in (use :pwd to figure that out if you don't know) 
 " Use :copen to view and jump the the results
-command -nargs=* DeepSearch grep! -rn --include={Makefile,*.{c,h,cpp,c++,php,inc,mk,h,hh,hpp,tcl,ipp,s,spp,dat,asm,bat,mak}} '<args>' .
+command -nargs=* DeepSearch grep! -rn --include={Makefile,*.{c,h,cpp,c++,php,inc,mk,h,hh,hpp,tcl,ipp,s,spp,dat,asm,bat,mak}} <args> .
+command -nargs=* Shell :echo system('<args>')
 
 "Vim only defaults to 3 matches so this is the syntax for the first 2
 "highlight any extra white space green
