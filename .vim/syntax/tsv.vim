@@ -31,6 +31,23 @@ function! g:Set_Cells(size)
     call g:Highlight_Cells(a:size)
 endfunction
 
+function! g:CopyMatches()
+    let hits = []
+    "%s/\([a-zA-Z0-9(){}\-_!@#$%^&*\[\]:;"'<,>.?\/+= ]\{1,}\)\t/\=len(add(hits, strlen(submatch(1)))) ? submatch(1) : ''/ge
+    "%s/[a-zA-Z ]\{1,}\t/\=len(add(hits, strlen(submatch(0)))) ? submatch(0) : ''/e
+    %s/[a-zA-Z0-9(){}\-_!@#$%^&*\[\]:;"'<,>.?\/+= ]\{1,}\t/\=len(add(hits, strlen(submatch(0)))) ? submatch(0) : ''/e
+    echo hits
+
+    for i in hits
+        if i > g:cellWidth
+            let g:cellWidth = i
+        endif
+    endfor
+
+    call g:Set_Cells(g:cellWidth)
+
+endfunction
+
 " /\w\{16,\}\t
 
 " Color the cell columns
