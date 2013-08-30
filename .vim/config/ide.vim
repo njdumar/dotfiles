@@ -10,7 +10,7 @@ map <F6> :call TimeLapse()<CR>
 
 map <F8> :cs kill -1<CR>
         \:!echo "Find Files"<CR>
-        \:!find . -iname '*.dat' -o -iname '*.tcl' -o -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hh' -o -iname '*.hpp' -o -iname '*.inc' -o -iname '*.asm' -o -iname '*.ipp' -o -iname '*.s'  -o -iname '*.spp'> cscope.files<CR>
+        \:!find . -regextype posix-extended -regex '.*\.(cpp\|tcl\|c\|h\|hh\|hpp\|asm\|ipp\|s\|spp)' > cscope.files<CR>
         \:!echo "Run ctags"<CR>
         \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
         \:!echo "Run cscope"<CR>
@@ -26,6 +26,7 @@ map <F10> :TlistToggle \| :silent NERDTreeMirror<CR>
 
 let g:tagbar_left = 1
 map <F11> :TagbarToggle <CR>
+
 
 "========================= PluginColors ==========================
 

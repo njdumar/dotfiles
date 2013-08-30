@@ -3,7 +3,7 @@
 set noexpandtab
 set list lcs=tab:__
 
-let g:cellWidth = 15
+let g:cellWidth = 20
 
 " Setup column highlighting. Every other cell column is highlighted
 function! g:Highlight_Cells(size)

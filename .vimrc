@@ -137,13 +137,17 @@ endif
 au BufNewFile,BufRead,BufEnter *.tsv set ft=tsv
 au BufNewFile *.tsv 0r ~/.vim/templates/template.tsv
 
+au BufNewFile,BufRead *.chklst set ft=chklst
+let g:checklist_use_timestamps = 0
+
 "---------------------------Vim Functions/Mappings-----------------------------
 "These functions will work with Vim and GVim
 
 " Command to recursively search through all source files begining in the
 " folder you started vim in (use :pwd to figure that out if you don't know) 
 " Use :copen to view and jump the the results
-command -nargs=* DeepSearch grep! -rn --include={Makefile,*.{c,h,cpp,c++,php,inc,mk,h,hh,hpp,tcl,ipp,s,spp,dat,asm,bat,mak}} <args> .
+command -nargs=* DeepSearch grep! -rn --include={Makefile,*.{c,h,cpp,c++,php,inc,mk,h,hh,hpp,tcl,ipp,s,spp,dat,asm,bat,mak}} '<args>' .
+command -nargs=* SearchReplace :!find . -regextype posix-extended -regex '.*\.(cpp|tcl|c|h|hh|hpp|asm|ipp|s|spp)' -exec sed -i '<args>' '{}' \; -print
 command -nargs=* Shell :echo system('<args>')
 
 "Vim only defaults to 3 matches so this is the syntax for the first 2
@@ -240,8 +244,33 @@ set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
 set laststatus=2
 
+" Create a Checklist like feature
+function! ToggleItem ()
+    " Define variables
+    let current_line = getline('.')
+    let l:line = getline(line(".") - 1)
+
+  " Toggle Folds
+    if match(current_line,'^- ') >= 0
+       exe 's/\V- /+ /i'
+   elseif match(current_line,'^+ ') >= 0
+        exe 's/\V+ //i'
+    else
+        exe 's/\V/- /i'
+    endif
+
+
+    highlight Plus ctermfg=green
+    highlight Minus ctermfg=red
+    syn match Minus /^- / skipwhite
+    syn match Plus  /^+ / skipwhite
+
+    return ""
+endfunction
+
+noremap <F2> :call ToggleItem()<CR><End>
+
 "Windows GVim settings
 if has("gui_running")
-  source ~/.vim/config/gui.vim
+    source ~/.vim/config/gui.vim
 endif  "end of if has gui_running
-
