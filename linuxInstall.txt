@@ -78,3 +78,11 @@ sudo fc-cache -fv
 
 -----> or in home dir, create .fonts and put them there.
 sudo fc-cache -fv
+
+//--------------------------------------------
+// Install Compilers
+//--------------------------------------------
+Update the bash_aliases to point to the compiler bins.
+
+http://www.microchip.com/pagehandler/en-us/family/mplabx/#downloads
+https://sourcery.mentor.com/GNUToolchain/subscription3053?lite=arm

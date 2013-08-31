@@ -3,10 +3,10 @@
 set noexpandtab
 set list lcs=tab:__
 
-let g:cellWidth = 20
+let g:cellWidth = 15
 
 " Setup column highlighting. Every other cell column is highlighted
-function! g:Highlight_Cells(size)
+function! g:HighlightCells(size)
 
     " There are 26 columns (A-Z)
     let c = a:size
@@ -24,17 +24,16 @@ function! g:Highlight_Cells(size)
 endfunction
 
 " Setup the actual cell columns
-function! g:Set_Cells(size)
+function! g:SetCells(size)
     let &shiftwidth = a:size
     let &softtabstop = a:size
     let &tabstop = a:size
-    call g:Highlight_Cells(a:size)
+    call g:HighlightCells(a:size)
 endfunction
 
-function! g:CopyMatches()
+" If any cell is larger then the current cell width, increase it.
+function! g:ResizeCells()
     let hits = []
-    "%s/\([a-zA-Z0-9(){}\-_!@#$%^&*\[\]:;"'<,>.?\/+= ]\{1,}\)\t/\=len(add(hits, strlen(submatch(1)))) ? submatch(1) : ''/ge
-    "%s/[a-zA-Z ]\{1,}\t/\=len(add(hits, strlen(submatch(0)))) ? submatch(0) : ''/e
     %s/[a-zA-Z0-9(){}\-_!@#$%^&*\[\]:;"'<,>.?\/+= ]\{1,}\t/\=len(add(hits, strlen(submatch(0)))) ? submatch(0) : ''/e
     echo hits
 
@@ -44,7 +43,7 @@ function! g:CopyMatches()
         endif
     endfor
 
-    call g:Set_Cells(g:cellWidth)
+    call g:SetCells(g:cellWidth)
 
 endfunction
 
@@ -75,4 +74,4 @@ inoremap <buffer> <silent> <Enter> <Esc> ji
 
 " Now do everything Most of the above should probably be in a plugin, with
 " only this in the syntax file, fix it later
-call g:Set_Cells(g:cellWidth)
+call g:SetCells(g:cellWidth)

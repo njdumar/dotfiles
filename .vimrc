@@ -82,6 +82,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'gregsexton/MatchTag.git'
 Bundle 'mbbill/undotree'
@@ -91,6 +92,10 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-scripts/git-time-lapse'
 Bundle 'vim-scripts/CCTree'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/OmniCppComplete'
+Bundle 'kien/ctrlp.vim'
+Bundle 'godlygeek/tabular'
 
 " ------------- General checks ------------------
 

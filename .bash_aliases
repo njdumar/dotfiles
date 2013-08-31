@@ -1,3 +1,8 @@
+PATH=$PATH:~/CodeSourcery/Sourcery_G++_Lite/bin
+export PATH
+export PATH="/opt/microchip/xc8/v1.12/bin":$PATH
+export PATH="/opt/microchip/xc16/v1.11/bin":$PATH
+export PATH="/opt/microchip/xc32/v1.20/bin":$PATH
 
 # some more ls aliases
 alias ll='ls -alF'
