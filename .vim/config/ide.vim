@@ -27,7 +27,6 @@ map <F10> :TlistToggle \| :silent NERDTreeMirror<CR>
 let g:tagbar_left = 1
 map <F11> :TagbarToggle <CR>
 
-
 "========================= PluginColors ==========================
 
 " Turn off the column highlighting for the vim-gitgutter plugin

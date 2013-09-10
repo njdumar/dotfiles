@@ -204,6 +204,9 @@ map ." :s/"//<CR> :/asdfasdf<CR>
 " Easier to hit then ESC
 inoremap qq <Esc>
 
+" Setup CtrlP for opening files
+map <C-p> :CtrlP <Esc>
+
 "CTRL-l/k/j/h moves to another window
 noremap <C-l> <C-W>l
 noremap <C-k> <C-W>k
@@ -250,6 +253,15 @@ set statusline+=\ %P    "percent through file
 set laststatus=2
 
 " Create a Checklist like feature
+function! HighlightPlusMinus ()
+
+    highlight Plus ctermfg=green
+    highlight Minus ctermfg=red
+    syn match Minus /^- / skipwhite
+    syn match Plus  /^+ / skipwhite
+
+endfunction
+
 function! ToggleItem ()
     " Define variables
     let current_line = getline('.')
@@ -264,16 +276,18 @@ function! ToggleItem ()
         exe 's/\V/- /i'
     endif
 
-
-    highlight Plus ctermfg=green
-    highlight Minus ctermfg=red
-    syn match Minus /^- / skipwhite
-    syn match Plus  /^+ / skipwhite
+    call HighlightPlusMinus()
 
     return ""
 endfunction
 
 noremap <F2> :call ToggleItem()<CR><End>
+au BufRead *.* :call HighlightPlusMinus()
+
+highlight Plus ctermfg=green
+highlight Minus ctermfg=red
+syn match Minus /^- / skipwhite
+syn match Plus  /^+ / skipwhite
 
 "Windows GVim settings
 if has("gui_running")

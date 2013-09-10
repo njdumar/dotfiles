@@ -58,13 +58,19 @@
     fileMode = false
 
     # Create svn compatible patch: git diff --no-prefix > ~/someFeature.diff
-    # or use the git-svn-diff.sh script to add in the svn revision numbers to the patch. 
-    # eg. 'git svn-diff <svn base> <local branch tip> > someFeature.patch' 
+    # or use the git-svn-diff.sh script to add in the svn revision numbers to the patch.
+    # eg. 'git svn-diff <svn base> <local branch tip> > someFeature.patch'
     #
     # To apply to svn: patch -p0 < ~/someFeature.diff
     #
     # NOTE: If your files has mixed/unix line endings but the wirking copy is dos, convert the entire patch file
     # to dos format (unix2dos filename) and apply the patch. Treat it like a binary
-    # so that is doesn't strip the CRs: patch -p0 --binary < ~/someFeature.patch
+    # so that is doesn't strip the CRs: patch -p0 --binary < ~/someFeature.patch. Also, linux hates patching dos
+    # files, better to have a checkout with unix line endings and convert the patch to have them as well. It workd better.
     #
-    # rebase onto: rebase --onto destinationBranch CurrentBranchBase branchToMove(HEAD)
+    # rebase onto can move a branch backwards: rebase --oonto <destinationBranch/commit> <branchToMove'sBase> <branchToMove(HEAD)>
+    #
+    # To ignore files already checked into the repo:
+    #   - git update-index --assume-unchanged file/to/ignore.txt
+    # And to undo it:
+    #   - git update-index --no-assume-unchanged file/to/ignore.txt
