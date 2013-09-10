@@ -263,14 +263,13 @@ function! HighlightPlusMinus ()
 endfunction
 
 function! ToggleItem ()
-    " Define variables
+
     let current_line = getline('.')
     let l:line = getline(line(".") - 1)
 
-  " Toggle Folds
     if match(current_line,'^- ') >= 0
-       exe 's/\V- /+ /i'
-   elseif match(current_line,'^+ ') >= 0
+        exe 's/\V- /+ /i'
+    elseif match(current_line,'^+ ') >= 0
         exe 's/\V+ //i'
     else
         exe 's/\V/- /i'
@@ -284,8 +283,8 @@ endfunction
 noremap <F2> :call ToggleItem()<CR><End>
 au BufRead *.* :call HighlightPlusMinus()
 
-highlight Plus ctermfg=green
-highlight Minus ctermfg=red
+highlight Plus ctermfg=green guifg=green
+highlight Minus ctermfg=red  guifg=red
 syn match Minus /^- / skipwhite
 syn match Plus  /^+ / skipwhite
 
