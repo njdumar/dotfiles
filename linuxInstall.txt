@@ -7,7 +7,8 @@ apt-get install build-essential autoconf terminator python \
     libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev ruby-dev mercurial \
     exuberant-ctags cscope zsh libcurl4-gnutls-dev libexpat1-dev gettext \
     zlib1g-dev libgcrypt11-dev libssl-dev gnome-do dos2unix subversion samba4 \
-    cifs-utils meld ia32-libs
+    cifs-utils meld ia32-libs samba cifs-utils samba-common system-config-samba \
+    python-glade2
 
 //--------------------------------------------
 // Build the most recent 7.3.x verion of vim with python support

@@ -53,12 +53,12 @@ endfunction
 highlight colorcolumn ctermbg=17
 
 " Highlight the numbers along the side a nice dark red
-highlight LineNr    guifg=darkred  ctermfg=darkred
+highlight LineNr    guifg=darkred  ctermfg=203
 
 " Highlight the first line red and underlined, the rest of the cells can have
 " whatever characters they have underlined, but not the tab. Underlining the
 " entire cell looks bad with such a smallish font
-highlight FirstLine cterm=bold cterm=underline ctermfg=darkred
+highlight FirstLine cterm=bold cterm=underline ctermfg=203
 match FirstLine /\%1l./
 
 highlight TheRest cterm=underline
@@ -67,6 +67,7 @@ highlight TheRest cterm=underline
 " Create more rows
 map <F2> :r ~/.vim/templates/template.tsv<CR>
 inoremap <F2> <Esc> :r ~/.vim/templates/template.tsv<CR>
+map <F3> :call g:ResizeCells()<CR>
 
 " In insert mode, tab moves you left, and enter moves you down.
 inoremap <buffer> <silent> <C-I> <Esc> li
