@@ -3,12 +3,12 @@
 filetype off
 filetype plugin indent on
 
+"set the editor to act like vim rather than vi
+set nocompatible
+
 " Custom colorscheme and other vim configurations 
 :colorscheme natecolors
 source ~/.vim/config/ide.vim
-
-"set the editor to act like vim rather than vi
-set nocompatible
 
 "stop creating those annoying ~ files.
 set nobackup
