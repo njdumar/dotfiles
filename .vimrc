@@ -99,18 +99,6 @@ Bundle 'godlygeek/tabular'
 
 " ------------- General checks ------------------
 
-if filereadable(glob("~/work.vim"))
-    let work = "true"
-    source ~/work.vim
-else
-    if filereadable($VIM . "/work.vim")
-        let work = "true"
-        source $VIM/work.vim
-    else
-        let work = "false"
-    endif
-endif
-
 " When editing a file, always jump to the last known cursor position.
 " Don't do it when the position is invalid or when inside an event handler
 " (happens when dropping a file on gvim).
@@ -121,17 +109,6 @@ au BufReadPost *
 
 " prevent single line comments from being automatic, it's annoying
 au FileType c,cpp setlocal comments-=:// comments+=f://
-
-"---------------------------- Load work functions ----------------------------
-if work == "true"
-    au Filetype c,cpp :call HighlightTypes()
-    au BufRead trace*.txt :call EnableTraceSyntax()
-    au BufRead etm*.txt :call EnableTraceSyntax()
-    au BufRead *.etm :call EnableTraceSyntax()
-    au BufRead *.fo :call HighlightCodeFo()
-    au BufRead *.dis :call HighlightCodeDis()
-    au BufRead *.*sym :call HighlightCodeSym()
-endif
 
 " Resource vimrc whenever it gets modified. However, it doesn't play well with
 " highlightTypes() for some reason, so I'll fix it later.
@@ -201,8 +178,8 @@ map ./ :s/\/\///<CR> :/asdfasdf<CR>
 map .# :s/#//<CR> :/asdfasdf<CR>
 map ." :s/"//<CR> :/asdfasdf<CR>
 
-" Easier to hit then ESC
-inoremap qq <Esc>
+" Use this instead of trying to hit ESC all the time
+inoremap ;; <Esc>
 
 " Setup CtrlP for opening files
 map <C-p> :CtrlP <Esc>

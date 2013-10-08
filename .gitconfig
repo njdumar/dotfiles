@@ -74,3 +74,5 @@
     #   - git update-index --assume-unchanged file/to/ignore.txt
     # And to undo it:
     #   - git update-index --no-assume-unchanged file/to/ignore.txt
+[push]
+	default = matching
