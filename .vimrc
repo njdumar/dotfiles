@@ -258,7 +258,7 @@ function! ToggleItem ()
 endfunction
 
 noremap <F2> :call ToggleItem()<CR><End>
-au BufRead *.* :call HighlightPlusMinus()
+au BufRead *.txt :call HighlightPlusMinus()
 
 highlight Plus ctermfg=green guifg=green
 highlight Minus ctermfg=red  guifg=red
