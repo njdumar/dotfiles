@@ -32,16 +32,14 @@ Installation (linux):
 Remember:
 ---------
 
-1. Work related stuff should NOT be added to the repo
-
-2. All scripts should work correctly, don't forget to install python,ruby,perl,...etc. 
+1. All scripts should work correctly, don't forget to install python,ruby,perl,...etc. 
    However, .gitconfig expects the clone to be located in ~/dotfiles/
 
-3. For the plugins to work correctly, vim needs python support. You most likely
+2. For the plugins to work correctly, vim needs python support. You most likely
    need to compile vim from source to get a recent enough version. See YCM 
    documentation for more info
 
-4. Vim plugin list includes:
+3. Vim plugin list includes:
     - NerdTree
     - TagList
     - TagBar
@@ -55,7 +53,7 @@ Remember:
     - YouCompleteMe
 
 
-5. For the guide to installing YCM:
+4. For the guide to installing YCM:
    https://github.com/Valloric/YouCompleteMe
 
-6. I am currently using YCM without clang support and instead using OmniCppComplete.
+5. I am currently using YCM without clang support and instead using OmniCppComplete.
