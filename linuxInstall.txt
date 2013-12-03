@@ -10,6 +10,10 @@ apt-get install build-essential autoconf terminator python \
     cifs-utils meld ia32-libs samba cifs-utils samba-common system-config-samba \
     python-glade2
 
+pacman -S base-devel
+pacman -S git tk svn firefox mercurial cmake tcl ruby perl tree ctags cscope zsh dos2unix \
+        samba smbclient bash-completion meld terminator arandr chromium
+
 //--------------------------------------------
 // Build the most recent 7.3.x verion of vim with python support
 //--------------------------------------------
@@ -34,17 +38,6 @@ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
 sudo update-alternatives --set vi /usr/bin/vim
 
 //--------------------------------------------
-// Get a clone of my dotfiles
-//--------------------------------------------
-cd ~
-git clone http://github.com/CaptOfCrush/dotfiles
-cd dotfiles
-git submodule update --init
------> Open vim, :BundleInstall
-cd .vim/bundle/YouCompleteMe
-./install.sh
-
-//--------------------------------------------
 // Build git from source. Do not uninstall the apt-get git, the bash-completion gets all screws up.
 // Just build the new binary to place on top.
 //--------------------------------------------
@@ -56,14 +49,29 @@ make prefix=/usr all
 sudo make prefix=/usr install
 
 //--------------------------------------------
+// Get a clone of my dotfiles
+//--------------------------------------------
+cd ~
+git clone http://github.com/CaptOfCrush/dotfiles
+cd dotfiles
+git submodule update --init
+
+//--------------------------------------------
 // Link to all the dotfiles
 //--------------------------------------------
 cd ~
 ln -s dotfiles/.vimrc .vimrc
 ln -s dotfiles/.vim .vim
 ln -s dotfiles/.bash_aliases .bash_aliases
-ln -s dotfiles/.gitfconfig .gitconfig
+ln -s dotfiles/.gitconfig .gitconfig
 ln -s dotfiles/.fonts .fonts
+
+//--------------------------------------------
+// Install all vim bundles
+//--------------------------------------------
+-----> Open vim, :BundleInstall
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh
 
 //--------------------------------------------
 // Update origimall .bashrc to include my aliases
