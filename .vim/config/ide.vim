@@ -8,14 +8,28 @@
 
 map <F6> :call TimeLapse()<CR>
 
-map <F8> :cs kill -1<CR>
-        \:!echo "Find Files"<CR>
-        \:!find . -regextype posix-extended -regex '.*\.(cpp\|tcl\|c\|h\|hh\|hpp\|asm\|ipp\|s\|spp)' > cscope.files<CR>
-        \:!echo "Run ctags"<CR>
-        \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
-        \:!echo "Run cscope"<CR>
-        \:!cscope -b -i cscope.files -f cscope.out<CR>
-        \:cs add cscope.out<CR> 
+"map <F8> :cs kill -1<CR>
+"        \:!rm tags<CR>
+"        \:!rm cscope.*<CR>
+"        \:!echo "Find Files"<CR>
+"        \:!find . -regextype posix-extended -regex '.*\.(cpp\|tcl\|c\|h\|hh\|hpp\|asm\|ipp\|s\|spp)' > cscope.files<CR>
+"        \:!echo "Run ctags"<CR>
+"        \:!ctags -f `pwd`/tags -a -h \".php.inc\" -L cscope.files -I --totals=yes --tag-relative=yes --PHP-kinds=+cf --python-kinds=+i --c++-kinds=+p --extra=+q  --fields=+liaS --language-force=C++<CR>
+"        \:!echo "Run cscope"<CR>
+"        \:!cscope -b -i cscope.files -f cscope.out<CR>
+"        \:cs add cscope.out<CR>
+
+map <F8> :Shell echo "Find Files";
+        \find . -regextype posix-extended -regex '.*\.(cpp\|tcl\|c\|h\|hh\|hpp\|asm\|ipp\|s\|spp)' > cscope.files;
+        \echo "Run ctags";
+        \ctags -f `pwd`/tags -L cscope.files -I --totals=yes
+                            \--tag-relative=yes --PHP-kinds=+cf
+                            \--python-kinds=+i --c++-kinds=+p
+                            \--extra=+q  --fields=+liaS --language-force=C++;
+        \echo "Run cscope";
+        \cscope -b -i cscope.files -f cscope.out;
+        \echo "Reset csope db connection"; sleep 1;
+        \vim --servername IDE --remote-send ":cs reset"<CR><CR>
 
 let g:NERDTreeWinSize = 25
 map <F9> :NERDTreeToggle<CR>
@@ -32,39 +46,133 @@ map <F11> :TagbarToggle <CR>
 " Turn off the column highlighting for the vim-gitgutter plugin
 highlight clear SignColumn
 
+"=================== Clang/SuperTab =========================
+
+set completeopt=longest,menuone
+
+" Set the behavior of SuperTab to always use clang complete
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+    \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
+" SuperTab option for context aware completion
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperSetTabDefaultCompletionType = "<c-x><c-u>"
+
+" Disable auto popup, use <Tab> to autocomplete
+let g:clang_complete_auto = 0
+
+" Turn off automatically selecting the first entry in the popup menu
+let g:clang_auto_select =  0
+let g:SuperTabLongestHighlight = 0
+
+" Show clang errors in the quickfix window
+let g:clang_complete_copen = 1
+
+let g:clang_snippets=1
+let g:clang_conceal_snippets=1
+
+"The single one that works with clang_complete
+let g:clang_snippets_engine='clang_complete'
+
+" used for clang_index (excplisy clang-complete fork)
+"let g:clang_user_options=""
+"let g:clang_auto_user_options="path, .clang_complete"
+"let g:clang_use_library=1
+"let g:clang_library_path="/usr/lib/"
+"let g:clang_sort_algo="priority"
+"let g:clang_complete_macros=1
+"let g:clang_complete_patterns=0
+"nnoremap <Leader>q :call g:ClangUpdateQuickFix()<CR>
+"
+"let g:clic_filename="/home/dumarn/work/Checkouts/git/index/index.db"
+"nnoremap <Leader>r :call ClangGetReferences()<CR>
+"nnoremap <Leader>d :call ClangGetDeclarations()<CR>
+"nnoremap <Leader>s :call ClangGetSubclasses()<CR>
+
 "========================= YCM ===============================
 
 " This is the default, I just put it here for my own reference
 " I'm not actually using YCM for its clang complete, it's just too 
 " much of a pain in the ass to get working correctly for large, complex code
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp,ipp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,d,vim,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_collect_identifiers_from_tags_files = 0
+"let g:ycm_semantic_triggers =  {
+"  \   'c' : ['->', '.'],
+"  \   'objc' : ['->', '.'],
+"  \   'ocaml' : ['.', '#'],
+"  \   'cpp,objcpp,ipp' : ['->', '.', '::'],
+"  \   'perl' : ['->'],
+"  \   'php' : ['->', '::'],
+"  \   'cs,java,javascript,d,vim,python,perl6,scala,vb,elixir,go' : ['.'],
+"  \   'ruby' : ['.', '::'],
+"  \   'lua' : ['.', ':'],
+"  \   'erlang' : [':'],
+"  \ }
+"let g:ycm_min_num_of_chars_for_completion = 1
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_collect_identifiers_from_tags_files = 1
 
 "=================== OmniCppComplete =========================
 
-set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
-let OmniCpp_GlobalScopeSearch   = 1
-let OmniCpp_DisplayMode         = 1
-let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
-let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
-let OmniCpp_ShowAccess          = 1 "show access in pop-up
-let OmniCpp_SelectFirstItem     = 0 "do not select first item in pop-up
-set completeopt=menuone,menu,longest
-au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.ipp set omnifunc=omni#cpp#complete#Main
+"set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
+"let OmniCpp_GlobalScopeSearch   = 1
+"let OmniCpp_DisplayMode         = 1
+"let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
+"let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
+"let OmniCpp_ShowAccess          = 1 "show access in pop-up
+"let OmniCpp_SelectFirstItem     = 0 "do not select first item in pop-up
+"set completeopt=menuone,menu,longest
+"au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.ipp set omnifunc=omni#cpp#complete#Main
 
+"=================== NeoComplete =========================
+"
+"" Disable AutoComplPop.
+"let g:acp_enableAtStartup = 0
+"
+"" Disable Auto select
+"let g:neocomplete#enable_auto_select = 0
+"
+"" Use neocomplete.
+"let g:neocomplete#enable_at_startup = 1
+"
+"" Use smartcase.
+"let g:neocomplete#enable_smart_case = 1
+"
+"" Set minimum syntax keyword length.
+"let g:neocomplete#sources#syntax#min_keyword_length = 3
+"let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"
+"" Define dictionary.
+"let g:neocomplete#sources#dictionary#dictionaries = {
+"    \ 'default' : '',
+"    \ 'vimshell' : $HOME.'/.vimshell_hist',
+"    \ 'scheme' : $HOME.'/.gosh_completions'
+"        \ }
+"
+"" Define keyword.
+"if !exists('g:neocomplete#keyword_patterns')
+"    let g:neocomplete#keyword_patterns = {}
+"endif
+"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+"
+"" Plugin key-mappings.
+"inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
+"
+"if !exists('g:neocomplete#force_omni_input_patterns')
+"    let g:neocomplete#force_omni_input_patterns = {}
+"endif
+"let g:neocomplete#force_overwrite_completefunc = 1
+""let g:neocomplete#force_omni_input_patterns.c =
+""            \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+""let g:neocomplete#force_omni_input_patterns.cpp =
+""            \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+""let g:neocomplete#force_omni_input_patterns.objc =
+""            \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+""let g:neocomplete#force_omni_input_patterns.objcpp =
+""            \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+"let g:clang_use_library = 1
+"
 "========================= cTags =============================
 
 "set the tags file

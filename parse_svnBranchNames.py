@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 
 import re, sys, getopt
 import os
 import subprocess
 
 # Take a list of svn repository directories:
-# svn list --depth infinity <full url> | grep -v '/library/\|/extern/\|/tools/\|/design/\|rel_branches\|trunk/\|tags/\|repo_lock\|\.' > list.txt
+# svn list --depth infinity <full url> | grep -v '//\|/src/\|/tools/\|/design/\|trunk/\|tags/\|repo_lock\|\.' > list.txt
 # and parse them. Find the root folder containing actual
 # branches (not folders containing folders that have branches) and create a .git/config compatible output.
 # This will let me choose exactly which branches I want in my git svn clone, instead of waiting for everything
@@ -20,9 +20,11 @@ def main(argv):
     generate = False
     inputList = ''
     cheat = ''
+    rewrite = False
+    root = ''
 
     try:
-        opts, args = getopt.getopt(argv,"hgb:o:s:u:i:c:",["help","generate","branches=","ofile=","svn=","url=","ignore="])
+        opts, args = getopt.getopt(argv,"hgb:o:s:u:i:c:r:",["help","generate","branches=","ofile=","svn=","url=","ignore=","rewriteRoot="])
     except getopt.GetoptError:
         print 'parse_svnBranches.py -b <svnBranchList> -o <outputfile>  -s <svn name> -u <url> -i <grep ignore string> -g'
         sys.exit(2)
@@ -33,10 +35,11 @@ def main(argv):
             print 'parse_svnBranches.py -b <svnBranchList> -o <outputfile>  -s <svn name> -u <url> -i <grep ignore string> -g'
             print '---------------------------------------------------------------------------'
             print '--branches    -b -> file that contains a list of svn branches from the \'svn list\' command'
-            print '--ofile    -o -> .gitconfig output file'
-            print '--svn      -s -> Name of the svn module (repo)'
-            print '--url      -u -> url of the svn repo (minus the repo name/module)'
-            print '--generate -g -> If specified, create the input file first'
+            print '--ofile       -o -> .gitconfig output file'
+            print '--svn         -s -> Name of the svn module (repo)'
+            print '--rewriteRoot -r -> Add the rewriteRoot option to the config'
+            print '--url         -u -> url of the svn repo (minus the repo name/module)'
+            print '--generate    -g -> If specified, create the input file first'
             exit(0)
         elif opt in ("-b", "--branches"):
             svnBranchList = arg
@@ -52,6 +55,9 @@ def main(argv):
             generate = True
         elif opt in ("-c"):
             cheat = arg
+        elif opt in ("-r"):
+            root = arg
+            rewrite = True
 
     if svnBranchList != '':
         svnBranches = open(svnBranchList, 'w')
@@ -70,13 +76,14 @@ def main(argv):
     out.write("    logallrefupdates = true\n")
     out.write("    symlinks = false\n")
     out.write("    ignorecase = true\n")
-    out.write("    autocrlf = false\n")
+    out.write("    autocrlf = true\n")
 
     for svnRepo in svn:
 
         if generate:
 
-            svnList = "svn list --depth infinity " + url + "/" + svnRepo + " | grep -v '" + ignore + "'"
+            svnList = "/usr/bin/svn list --depth infinity " + url + "/" + svnRepo + " | /usr/bin/grep -v '" + ignore + "'"
+            print (svnList)
             inputList = subprocess.check_output(svnList, shell=True)
 
             inputList = inputList.split('\n');
@@ -144,6 +151,10 @@ def main(argv):
 
         out.write("[svn-remote \"" + svnRepo + "\"]\n")
         out.write("    url = " + url +"/" + svnRepo + "\n")
+
+        if rewrite:
+            out.write("    rewriteRoot = " + root +"/" + svnRepo + "\n")
+
         out.write("    fetch = trunk:refs/remotes/" + svnRepo + "/trunk\n")
         out.write("    tags = tags/*:refs/remotes/" + svnRepo + "/tags/*\n")
         out.write("    branches = rel_branches/*:refs/remotes/" + svnRepo + "/rel_branches/*\n")

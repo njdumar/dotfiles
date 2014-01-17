@@ -3,6 +3,10 @@
 filetype off
 filetype plugin indent on
 
+set dir=~/tmp,/var/tmp
+set backupdir=~/tmp,~/
+set undodir=~/tmp,~/
+
 "set the editor to act like vim rather than vi
 set nocompatible
 
@@ -80,25 +84,37 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'gregsexton/MatchTag.git'
 Bundle 'mbbill/undotree'
 Bundle 'guns/xterm-color-table.vim.git'
-Bundle 'airblade/vim-gitgutter.git'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-dispatch'
 Bundle 'kshenoy/vim-signature'
 Bundle 'vim-scripts/git-time-lapse'
 Bundle 'vim-scripts/CCTree'
 Bundle 'vim-scripts/taglist.vim'
-Bundle 'vim-scripts/OmniCppComplete'
+Bundle 'vim-scripts/AutoComplPop'
+Bundle 'Rip-Rip/clang_complete'
+"Bundle 'exclipy/clang_complete'
+Bundle 'vim-scripts/lh-vim-lib'
+Bundle 'smartegg/lh-dev'
+"Bundle 'LucHermitte/vim-clang'
+Bundle 'ervandew/supertab'
 Bundle 'kien/ctrlp.vim'
 Bundle 'godlygeek/tabular'
+Bundle 'troydm/shellasync.vim'
+"Bundle 'vim-scripts/clang-complete'
+"Bundle 'airblade/vim-gitgutter.git'
+"Bundle 'Shougo/neocomplete.vim'
+"Bundle 'Valloric/YouCompleteMe'
+
+" for exclipy's clang complete
+"let g:clang_user_options = '2>dev/null || exit 0'
 
 " ------------- General checks ------------------
-
 " When editing a file, always jump to the last known cursor position.
 " Don't do it when the position is invalid or when inside an event handler
 " (happens when dropping a file on gvim).
@@ -128,29 +144,6 @@ let g:checklist_use_timestamps = 0
 " Command to recursively search through all source files begining in the
 " folder you started vim in (use :pwd to figure that out if you don't know) 
 " Use :copen to view and jump the the results
-command -nargs=* DeepSearch grep! -rn --include={Makefile,*.{c,h,cpp,c++,php,inc,mk,h,hh,hpp,tcl,ipp,s,spp,dat,asm,bat,mak}} '<args>' .
-command -nargs=* SearchReplace :!find . -regextype posix-extended -regex '.*\.(cpp|tcl|c|h|hh|hpp|asm|ipp|s|spp)' -exec sed -i '<args>' '{}' \; -print
-command -nargs=* Shell :echo system('<args>')
-
-"Vim only defaults to 3 matches so this is the syntax for the first 2
-"highlight any extra white space green
-"match ExtraWhitespace /\s\+$\| \+\ze\t/   This will highlight only white
-"space at the end of a tab
-"Highlight any characters above 80 places red
-
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-let s:longlines = 1
-function! Match_long_lines()
-  if s:longlines == 1
-    let s:longlines = 0
-    :match ExtraWhitespace /\s\+$\|\t/
-    :2match ErrorMsg '\%>132v.\+'
-  else
-    let s:longlines = 1
-    :match
-    :2match
-  endif
-endfunction
 
 nnoremap <F3> :call Match_long_lines()<CR>
 inoremap <F3> <Esc>:call Match_long_lines()<CR>a
@@ -172,11 +165,13 @@ map <F7> :browse tabnew<CR>
 map ,/ :s/^/\/\//<CR> :/asdfasdf<CR>
 map ,# :s/^/#/<CR> :/asdfasdf<CR>
 map ," :s/^/"/<CR> :/asdfasdf<CR>
+map ,% :s/^/%/<CR> :/asdfasdf<CR>
 
 "c++, python, vimscript style uncomment
 map ./ :s/\/\///<CR> :/asdfasdf<CR>
 map .# :s/#//<CR> :/asdfasdf<CR>
 map ." :s/"//<CR> :/asdfasdf<CR>
+map .% :s/%//<CR> :/asdfasdf<CR>
 
 " Use this instead of trying to hit ESC all the time
 inoremap ;; <Esc>

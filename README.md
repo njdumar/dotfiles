@@ -51,6 +51,7 @@ Remember:
     - Xterm-color-table
     - Vundle (vim plugin manager)
     - YouCompleteMe
+    - and others
 
 
 4. For the guide to installing YCM:

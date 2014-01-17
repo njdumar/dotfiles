@@ -1,6 +1,6 @@
-//--------------------------------------------
-// These are all the packages i usually need
-//--------------------------------------------
+#--------------------------------------------
+# These are all the packages i usually need
+#--------------------------------------------
 apt-get install build-essential autoconf terminator python \
     perl ruby tcl firefox git git-svn gitk arandr cmake tree libncurses5-dev  \
     libgnome2-dev  libgnomeui-dev  libgtk2.0-dev  libatk1.0-dev  libbonoboui2-dev \
@@ -14,12 +14,14 @@ pacman -S base-devel
 pacman -S git tk svn firefox mercurial cmake tcl ruby perl tree ctags cscope zsh dos2unix \
         samba smbclient bash-completion meld terminator arandr chromium
 
-//--------------------------------------------
-// Build the most recent 7.3.x verion of vim with python support
-//--------------------------------------------
+#--------------------------------------------
+# Build the most recent 7.3.x verion of vim with python support
+#--------------------------------------------
 sudo apt-get remove vim vim-runtime gvim
 sudo apt-get remove vim-tiny vim-common vim-gui-common
 cd ~
+mkdir clones
+cd clones
 hg clone https://code.google.com/p/vim/ vim-source
 cd vim-source
 hg checkout v7-3-1314
@@ -37,28 +39,28 @@ sudo update-alternatives --set editor /usr/bin/vim
 sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
 sudo update-alternatives --set vi /usr/bin/vim
 
-//--------------------------------------------
-// Build git from source. Do not uninstall the apt-get git, the bash-completion gets all screws up.
-// Just build the new binary to place on top.
-//--------------------------------------------
-cd ~
+#--------------------------------------------
+# Build git from source. Do not uninstall the apt-get git, the bash-completion gets all screws up.
+# Just build the new binary to place on top.
+#--------------------------------------------
+cd ~/clones
 git clone git://git.kernel.org/pub/scm/git/git.git git-source
 cd git-source
 git checkout v1.8.3.4
 make prefix=/usr all
 sudo make prefix=/usr install
 
-//--------------------------------------------
-// Get a clone of my dotfiles
-//--------------------------------------------
+#--------------------------------------------
+# Get a clone of my dotfiles
+#--------------------------------------------
 cd ~
 git clone http://github.com/CaptOfCrush/dotfiles
 cd dotfiles
 git submodule update --init
 
-//--------------------------------------------
-// Link to all the dotfiles
-//--------------------------------------------
+#--------------------------------------------
+# Link to all the dotfiles
+#--------------------------------------------
 cd ~
 ln -s dotfiles/.vimrc .vimrc
 ln -s dotfiles/.vim .vim
@@ -66,32 +68,33 @@ ln -s dotfiles/.bash_aliases .bash_aliases
 ln -s dotfiles/.gitconfig .gitconfig
 ln -s dotfiles/.fonts .fonts
 
-//--------------------------------------------
-// Install all vim bundles
-//--------------------------------------------
------> Open vim, :BundleInstall
-cd ~/.vim/bundle/YouCompleteMe
-./install.sh
+#--------------------------------------------
+# Install all vim bundles
+#--------------------------------------------
+# -----> Open vim, :BundleInstall
 
-//--------------------------------------------
-// Update origimall .bashrc to include my aliases
-//--------------------------------------------
-cd ~
------> Open .bashrc, add 'source ~/.bash_aliases' to the end
+# For YCM,
+#cd ~/.vim/bundle/YouCompleteMe
+#./install.sh
 
-//--------------------------------------------
-// Install Proggy fonts
-//--------------------------------------------
----Extract ttfs in proggy tar to /usr/share/fonts/truetype/proggy
-sudo fc-cache -fv
+#--------------------------------------------
+# Update origimall .bashrc to include my aliases
+#--------------------------------------------
+#-----> Open .bashrc, add 'source ~/.bash_aliases' to the end
 
------> or in home dir, create .fonts and put them there.
-sudo fc-cache -fv
+#--------------------------------------------
+# Install Proggy fonts
+#--------------------------------------------
+#---Extract ttfs in proggy tar to /usr/share/fonts/truetype/proggy
+#sudo fc-cache -fv
 
-//--------------------------------------------
-// Install Compilers
-//--------------------------------------------
-Update the bash_aliases to point to the compiler bins.
+#-----> or in home dir, create .fonts and put them there.
+#sudo fc-cache -fv
 
-http://www.microchip.com/pagehandler/en-us/family/mplabx/#downloads
-https://sourcery.mentor.com/GNUToolchain/subscription3053?lite=arm
+#--------------------------------------------
+# Install Compilers
+#--------------------------------------------
+# Update the bash_aliases to point to the compiler bins.
+
+# http://www.microchip.com/pagehandler/en-us/family/mplabx/#downloads
+# https://sourcery.mentor.com/GNUToolchain/subscription3053?lite=arm
