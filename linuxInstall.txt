@@ -8,11 +8,11 @@ apt-get install build-essential autoconf terminator python \
     exuberant-ctags cscope zsh libcurl4-gnutls-dev libexpat1-dev gettext \
     zlib1g-dev libgcrypt11-dev libssl-dev gnome-do dos2unix subversion samba4 \
     cifs-utils meld ia32-libs samba cifs-utils samba-common system-config-samba \
-    python-glade2
+    python-glade2 tig
 
 pacman -S base-devel
 pacman -S git tk svn firefox mercurial cmake tcl ruby perl tree ctags cscope zsh dos2unix \
-        samba smbclient bash-completion meld terminator arandr chromium
+        samba smbclient bash-completion meld terminator arandr chromium tig
 
 #--------------------------------------------
 # Build the most recent 7.3.x verion of vim with python support
