@@ -1,5 +1,6 @@
 "--------------------------------Vim Settings----------------------------------
 " This is neccessary for the colorscheme appearantly
+" This is neccessary for the colorscheme appearantly
 filetype off
 filetype plugin indent on
 
