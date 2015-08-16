@@ -23,10 +23,6 @@ Installation (linux):
 4. Get all the vundle plugins 
     - Open vim, :BundleInstall
 
-5. Set up YouCompleteMe (Linux)
-    - cd ~/dotfiles/.vim/bundle/YouCompleteMe
-    - ./install.sh
-
 6. Add .bash_aliases to your regular .bashrc/.bash_profile/whatever to source it
 
 Remember:
@@ -56,5 +52,3 @@ Remember:
 
 4. For the guide to installing YCM:
    https://github.com/Valloric/YouCompleteMe
-
-5. I am currently using YCM without clang support and instead using OmniCppComplete.

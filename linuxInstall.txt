@@ -11,8 +11,7 @@ apt-get install build-essential autoconf terminator python \
     python-glade2 tig
 
 pacman -S base-devel
-pacman -S git tk svn firefox mercurial cmake tcl ruby perl tree ctags cscope zsh dos2unix \
-        samba smbclient bash-completion meld terminator arandr chromium tig
+pacman -S git tk svn firefox mercurial cmake tcl ruby perl tree ctags cscope zsh dos2unix gvim samba smbclient bash-completion meld terminator arandr chromium tig
 
 #--------------------------------------------
 # Build the most recent 7.3.x verion of vim with python support
