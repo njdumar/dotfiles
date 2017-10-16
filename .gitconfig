@@ -2,35 +2,15 @@
     name = Nathan Dumar
     email = njdumar@gmail.com
 [diff]
-    tool=meld
+    tool=vimdiff
 [difftool "meld"]
     path = meld
 [merge]
-    tool=mymeld
+    tool=vimdiff
     conflictstyle = diff3
 [mergetool "mymeld"]
     cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE $MERGED
 [alias]
-    # Log of current branch
-    lg1 = log --graph --color --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
-        %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
-        %n''          %C(white)%s%C(reset) ' --abbrev-commit
-
-    # Log of all branches
-    lg2 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
-        %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
-        %n''          %C(white)%s%C(reset) ' --abbrev-commit
-
-    # Log of all branches, first parent for cleaner log
-    lg3 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) \
-        %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%C(bold white)  — %an%C(reset)\
-        %n''          %C(white)%s%C(reset) ' --abbrev-commit --first-parent
-
-    # Log of all branches, one line
-    lg4 = log --graph --color --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) \
-          %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit \
-          --date=relative
-
     pullall = !git pull && git submodule update --recursive --init
     mergenff = merge --no-ff
     unstage = reset HEAD
@@ -49,11 +29,6 @@
     first-ancestor-with = !zsh -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-$1}\") \
                       <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
 
-    # Check if the current branch (and all the submodules) are pushed up. The submodules need to be pushed first, so check it
-    verify = !sudo ~/dotfiles/git_check.rb
-
-    # Issue the same command on all submodules
-    recur = !sudo ~/dotfiles/git-submodule-recur.sh
 [core]
     fileMode = false
 

@@ -4,8 +4,8 @@
 #export PATH="/opt/microchip/xc16/v1.11/bin":$PATH
 #export PATH="/opt/microchip/xc32/v1.20/bin":$PATH
 
-source /usr/share/git/completion/git-completion.bash
-source /usr/share/git/completion/git-prompt.sh
+#source /usr/share/git/completion/git-completion.bash
+#source /usr/share/git/completion/git-prompt.sh
 
 # some more ls aliases
 alias ll='ls -alF'
