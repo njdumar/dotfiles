@@ -36,7 +36,6 @@ alias gsdm='git svn-diff master'
 alias gca='git commit -am '
 alias gp='git push'
 alias gpg='git push gitlab'
-alias gpb='git push bitbucket'
 alias gss='git svn-update-all svn'
 
 alias gitVimDiff='vim -p $(git diff --name-only) -c "tabdo :Gvdiff"'
