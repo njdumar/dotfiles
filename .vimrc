@@ -156,7 +156,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'guns/xterm-color-table.vim.git'
 Bundle 'tpope/vim-dispatch'
-Bundle 'tpope/vim-fugitive'
+"Bundle 'tpope/vim-fugitive'
 Bundle 'vim-scripts/git-time-lapse'
 Bundle 'godlygeek/tabular'
 "Bundle 'kshenoy/vim-signature'

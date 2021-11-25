@@ -1,7 +1,5 @@
 source ~/.bash_other
 
-set -o vi
-
 # Disable software flow conntrol (XON/XOFF), it's annoying in vim
 stty -ixon
 
