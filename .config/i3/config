@@ -131,28 +131,28 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1: slack"
+set $ws1 "1: web"
 set $ws2 "2: code"
-set $ws3 "3: tools"
+set $ws3 "3: remmina"
 set $ws4 "4: webex"
-set $ws5 "5: remmina"
+set $ws5 "5: 3d print"
 set $ws6 "6: misc"
-set $ws7 "7: 3d print"
-set $ws8 "8: gaming"
-set $ws9 "9: other"
-set $ws10 "10: web"
+set $ws7 "7: gaming"
+set $ws8 "8: web"
+set $ws9 "9: music"
+set $ws10 "10: misc"
 
 # assign workspaces
-workspace $ws1 output DP-3
-workspace $ws2 output DVI-I-1
-workspace $ws3 output DVI-I-1
-workspace $ws4 output DVI-I-1
-workspace $ws5 output DVI-I-1
-workspace $ws6 output DVI-I-1
-workspace $ws7 output DVI-I-1
-workspace $ws8 output DVI-I-1
-workspace $ws9 output DP-2
-workspace $ws10 output DP-2
+workspace $ws1 output DP-2
+workspace $ws2 output DP-2
+workspace $ws3 output DP-2
+workspace $ws4 output DP-2
+workspace $ws5 output DP-2
+workspace $ws6 output DP-2
+workspace $ws7 output DP-2
+workspace $ws8 output DP-3
+workspace $ws9 output DP-3
+workspace $ws10 output DP-3
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -182,16 +182,16 @@ set $i3_resurrect i3-resurrect
 
 # Save workspace mode.
 mode "save" {
-  bindsym 1 exec "$i3_resurrect save -w '1: slack'    --swallow=class,instance,title"
-  bindsym 2 exec "$i3_resurrect save -w '2: other'    --swallow=class,instance,title"
-  bindsym 3 exec "$i3_resurrect save -w '3: code'     --swallow=class,instance,title"
-  bindsym 4 exec "$i3_resurrect save -w '4: tools'    --swallow=class,instance,title"
-  bindsym 5 exec "$i3_resurrect save -w '5: wrbex'    --swallow=class,instance,title"
-  bindsym 6 exec "$i3_resurrect save -w '6: remmina'  --swallow=class,instance,title"
-  bindsym 7 exec "$i3_resurrect save -w '7: misc'     --swallow=class,instance,title"
-  bindsym 8 exec "$i3_resurrect save -w '8: 3d print' --swallow=class,instance,title"
-  bindsym 9 exec "$i3_resurrect save -w '9: gaming'   --swallow=class,instance,title"
-  bindsym 0 exec "$i3_resurrect save -w '10: web'     --swallow=class,instance,title"
+  bindsym 1 exec "$i3_resurrect save -w '1: web'      --swallow=class,instance,title"
+  bindsym 2 exec "$i3_resurrect save -w '2: code'     --swallow=class,instance,title"
+  bindsym 3 exec "$i3_resurrect save -w '3: remmina'  --swallow=class,instance,title"
+  bindsym 4 exec "$i3_resurrect save -w '4: webex'    --swallow=class,instance,title"
+  bindsym 5 exec "$i3_resurrect save -w '5: 3d print' --swallow=class,instance,title"
+  bindsym 6 exec "$i3_resurrect save -w '6: misc'     --swallow=class,instance,title"
+  bindsym 7 exec "$i3_resurrect save -w '7: gaming'   --swallow=class,instance,title"
+  bindsym 8 exec "$i3_resurrect save -w '8: web'      --swallow=class,instance,title"
+  bindsym 9 exec "$i3_resurrect save -w '9: music'    --swallow=class,instance,title"
+  bindsym 0 exec "$i3_resurrect save -w '10: misc'    --swallow=class,instance,title"
 
   # Back to normal: Enter, Escape, or s
   bindsym Return mode "default"
@@ -204,27 +204,27 @@ bindsym $mod+z mode "save"
 
 # Restore workspace mode.
 mode "restore" {
-  bindsym 1 exec "$i3_resurrect restore -w '1: slack'    --programs-only"
-  bindsym 2 exec "$i3_resurrect restore -w '2: other'    --programs-only"
-  bindsym 3 exec "$i3_resurrect restore -w '3: code'     --programs-only"
-  bindsym 4 exec "$i3_resurrect restore -w '4: tools'    --programs-only"
-  bindsym 5 exec "$i3_resurrect restore -w '5: wrbex'    --programs-only"
-  bindsym 6 exec "$i3_resurrect restore -w '6: remmina'  --programs-only"
-  bindsym 7 exec "$i3_resurrect restore -w '7: misc'     --programs-only"
-  bindsym 8 exec "$i3_resurrect restore -w '8: 3d print' --programs-only"
-  bindsym 9 exec "$i3_resurrect restore -w '9: gaming'   --programs-only"
-  bindsym 0 exec "$i3_resurrect restore -w '10: web'     --programs-only"
+  bindsym 1 exec "$i3_resurrect restore -w '1: web'      --programs-only"
+  bindsym 2 exec "$i3_resurrect restore -w '2: code'     --programs-only"
+  bindsym 3 exec "$i3_resurrect restore -w '3: remmina'  --programs-only"
+  bindsym 4 exec "$i3_resurrect restore -w '4: webex'    --programs-only"
+  bindsym 5 exec "$i3_resurrect restore -w '5: 3d print' --programs-only"
+  bindsym 6 exec "$i3_resurrect restore -w '6: misc'     --programs-only"
+  bindsym 7 exec "$i3_resurrect restore -w '7: gaming'   --programs-only"
+  bindsym 8 exec "$i3_resurrect restore -w '8: web'      --programs-only"
+  bindsym 9 exec "$i3_resurrect restore -w '9: music'    --programs-only"
+  bindsym 0 exec "$i3_resurrect restore -w '10: misc'    --programs-only"
 
-  bindsym $mod+1 exec "$i3_resurrect restore -w '1: slack'    --layout-only"
-  bindsym $mod+2 exec "$i3_resurrect restore -w '2: other'    --layout-only"
-  bindsym $mod+3 exec "$i3_resurrect restore -w '3: code'     --layout-only"
-  bindsym $mod+4 exec "$i3_resurrect restore -w '4: tools'    --layout-only"
-  bindsym $mod+5 exec "$i3_resurrect restore -w '5: wrbex'    --layout-only"
-  bindsym $mod+6 exec "$i3_resurrect restore -w '6: remmina'  --layout-only"
-  bindsym $mod+7 exec "$i3_resurrect restore -w '7: misc'     --layout-only"
-  bindsym $mod+8 exec "$i3_resurrect restore -w '8: 3d print' --layout-only"
-  bindsym $mod+9 exec "$i3_resurrect restore -w '9: gaming'   --layout-only"
-  bindsym $mod+0 exec "$i3_resurrect restore -w '10: web'     --layout-only"
+  bindsym $mod+1 exec "$i3_resurrect restore -w '1: web'      --layout-only"
+  bindsym $mod+2 exec "$i3_resurrect restore -w '2: code'     --layout-only"
+  bindsym $mod+3 exec "$i3_resurrect restore -w '3: remmina'  --layout-only"
+  bindsym $mod+4 exec "$i3_resurrect restore -w '4: webex'    --layout-only"
+  bindsym $mod+5 exec "$i3_resurrect restore -w '5: 3d print' --layout-only"
+  bindsym $mod+6 exec "$i3_resurrect restore -w '6: misc'     --layout-only"
+  bindsym $mod+7 exec "$i3_resurrect restore -w '7: gaming'   --layout-only"
+  bindsym $mod+8 exec "$i3_resurrect restore -w '8: web'      --layout-only"
+  bindsym $mod+9 exec "$i3_resurrect restore -w '9: music'    --layout-only"
+  bindsym $mod+0 exec "$i3_resurrect restore -w '10: misc'    --layout-only"
 
   # Back to normal: Enter, Escape, or n
   bindsym Return mode "default"
@@ -277,4 +277,5 @@ for_window [class="Pavucontrol"] floating enable
 for_window [window_role="About"] floating enable
 for_window [title="Authy"] floating enable
 
+exec_always --no-startup-id xfce4-power-manager
 exec ~/.screenlayout/i3.sh
