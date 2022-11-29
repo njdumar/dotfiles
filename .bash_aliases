@@ -21,7 +21,6 @@ fi
 
 export PATH=$PATH:/usr/local/go/bin
 
->>>>>>> a6b8ac6 (Updates)
 # Disable software flow conntrol (XON/XOFF), it's annoying in vim
 stty -ixon
 
