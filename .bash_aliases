@@ -1,5 +1,27 @@
-source ~/.bash_other
+if [ -f ~/.bash_other ] ; then
+    source ~/.bash_other
+fi
 
+# eval $(keychain --eval --quiet id_ed25519 id_rsa ~/.keys/my_custom_key)
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add
+fi
+
+if [ -f /usr/bin/nvim ] ; then
+    alias vim=nvim
+fi
+
+# Better ctrl-r replacement
+if [ -f /usr/share/fzf/key-bindings.bash ] ; then
+    source /usr/share/fzf/key-bindings.bash
+else
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+fi
+
+export PATH=$PATH:/usr/local/go/bin
+
+>>>>>>> a6b8ac6 (Updates)
 # Disable software flow conntrol (XON/XOFF), it's annoying in vim
 stty -ixon
 
@@ -20,11 +42,6 @@ export CSCOPE_EDITOR=/usr/bin/vim
     printf '%s' "$answer"
     bc -l <<< "obase=16;ans=$answer;print \" (0x\",ans,\")\\n\""
 }
-
-# Build aliases
-alias build="build.sh"
-alias setup_environment="source ./setup_environment.sh"
-alias setup="source ./setup.sh"
 
 # Aliases for git
 alias gs='git status'

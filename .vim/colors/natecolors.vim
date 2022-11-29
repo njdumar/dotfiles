@@ -1,34 +1,55 @@
 
 "------------------------Color Scheme Settings----------------------------
-au BufReadPost * syn match    Braces          "[(){}\[\]]"
-au BufReadPost * syn match    cCustomParen    "(" contains=cParen
-au BufReadPost * syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-au BufReadPost * syn match    cCustomScope    "::"
-au BufReadPost * syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
-au BufReadPost * syn match    cCustomClass    "\w\+\s*::\w\+\s*::" contains=cCustomScope
-au BufReadPost * syn match    cCustomScope2   "\."
-au BufReadPost * syn match    cCustomClass    "\.\w\+\s*\." contains=cCustomScope2
+au BufReadPost * syn match OperatorChars "?\|+\|-\|\*\|;\|:\|,\|<\|>\|&\||\|!\|\~\|%\|=\|)\|(\|{\|}\|\.\|\[\|\]\|/\(/\|*\)\@!"
+au BufReadPost * syn match Braces          "[(){}\[\]]"
+au BufReadPost * syn match cCustomParen    "("
+au BufReadPost * syn match cCustomScope    "::"
+au BufReadPost * syn match cCustomScope2   "\."
+au BufReadPost * syn match cCustomFunc     "\w\+\s*(" contains=cCustomParen
+au BufReadPost * syn match cCustomNamespace "\(\w\+\s*::\)\+" contains=cCustomScope
 
-hi def link cCustomFunc  Function
-hi def link cCustomClass Function
+" The following can be annoying when looking at files that are not source code
+" classes or structs using a member variable
+au BufReadPost *.cpp,*.hh,*.hpp,*.ipp,*.tpp,*.go,*.py syn match cCustomClass "\(\<\w\+\>\.\)\+" contains=cCustomScope2
+
+" The member variable of a class or struct (not a member function)
+au BufReadPost *.cpp,*.hh,*.hpp,*.ipp,*.tpp,*.go,*.py syn match cCustomMember "\(\<\w\+\>\.\)\+\<\w\+\>[([<]\@!" contains=cCustomClass
+
+" Variable defined in a namespace (not a function function)
+au BufReadPost *.cpp,*.hh,*.hpp,*.ipp,*.tpp,*.go,*.py syn match cCustomNamespaceMember "\(\w\+\s*::\)\+\<\w\+\>[([<]\@!" contains=cCustomNamespace
+
+" Try to find macros
+au BufReadPost *.cpp,*.hh,*.hpp,*.ipp,*.tpp,*.go,*.py syn match cCustomMarco "[A-Z_]\+\s*(" contains=cCustomParen
+
+hi def link cCustomParen Braces
+hi def link cCustomFunc Function
+hi def link cCustomMarco PreProc
+hi def link cCustomNamespace Namespace
+
+hi def link cCustomMember GroupMembers
+hi def link cCustomNamespaceMember GroupMembers
+
+hi def link cCustomScope Statement
+hi def link cCustomScope2 Statement
+hi def link OperatorChars Statement
 
 syn region Comment start=/"""/ end=/"""/
 
 set background=dark
 
 "Set the number of terminal colors to 256, this will work on most systems
-set t_Co=256
+"set t_Co=256
 
 syntax on
 set hlsearch
 
-highlight   Normal           guibg=#121212     guifg=gray      gui=NONE     ctermbg=233    ctermfg=gray    cterm=NONE
+highlight   Normal           guibg=#121212     guifg=#808080   gui=NONE     ctermbg=233    ctermfg=gray    cterm=NONE
 highlight   Search           guibg=NONE        guifg=NONE      gui=standout ctermbg=NONE   ctermfg=NONE    cterm=standout
 highlight   Folded           guibg=#262626     guifg=#5f5faf   gui=NONE     ctermbg=235    ctermfg=61      cterm=NONE
 
 highlight   LineNr           guibg=NONE        guifg=#5A5A5A   gui=NONE     ctermbg=NONE   ctermfg=238     cterm=NONE
-highlight   Constant         guibg=NONE        guifg=White     gui=NONE     ctermbg=NONE   ctermfg=White   cterm=NONE
-highlight   Statement        guibg=NONE        guifg=#ff5f5f   gui=NONE     ctermbg=NONE   ctermfg=203     cterm=NONE
+highlight   Constant         guibg=NONE        guifg=#ffffff   gui=NONE     ctermbg=NONE   ctermfg=15      cterm=NONE
+highlight   Statement        guibg=NONE        guifg=#d75f5f   gui=NONE     ctermbg=NONE   ctermfg=167     cterm=NONE
 highlight   Identifier       guibg=NONE        guifg=#5faf5f   gui=NONE     ctermbg=NONE   ctermfg=71      cterm=NONE
 highlight   Function         guibg=NONE        guifg=#00afaf   gui=NONE     ctermbg=NONE   ctermfg=37      cterm=NONE
 highlight   PreProc          guibg=NONE        guifg=#DFDF5F   gui=NONE     ctermbg=NONE   ctermfg=185     cterm=NONE
@@ -38,19 +59,19 @@ highlight   Comment          guibg=NONE        guifg=#5f5faf   gui=NONE     cter
 highlight   Directory        guibg=NONE        guifg=#5f5faf   gui=NONE     ctermbg=NONE   ctermfg=61      cterm=NONE
 highlight   Braces           guibg=NONE        guifg=#af5f5f   gui=NONE     ctermbg=none   ctermfg=131     cterm=NONE
 
-highlight   PMenu            guibg=lightpink   guifg=black     gui=NONE     ctermbg=219    ctermfg=black   cterm=NONE
-highlight   PMenuSel         guibg=gray        guifg=black     gui=NONE     ctermbg=gray   ctermfg=black   cterm=NONE
+highlight   PMenu            guibg=lightpink   guifg=#000000   gui=NONE     ctermbg=219    ctermfg=black   cterm=NONE
+highlight   PMenuSel         guibg=#808080     guifg=#000000   gui=NONE     ctermbg=gray   ctermfg=black   cterm=NONE
 
 highlight   CursorLine       guibg=#1c1c1c     guifg=NONE      gui=NONE     ctermbg=234    ctermfg=NONE    cterm=NONE
 highlight   CursorColumn     guibg=#1c1c1c     guifg=NONE      gui=NONE     ctermbg=234    ctermfg=NONE    cterm=NONE
 highlight   colorcolumn      guibg=#1c1c1c     guifg=NONE      gui=NONE     ctermbg=234    ctermfg=NONE    cterm=NONE
 
 highlight   DiffDelete       guibg=#262626     guifg=#d75f5f   gui=NONE     ctermbg=235    ctermfg=167     cterm=NONE
-highlight   DiffText         guibg=#000080     guifg=NONE      gui=NONE     ctermbg=17   ctermfg=NONE    cterm=NONE
-highlight   DiffAdd          guibg=#262626     guifg=NONE      gui=NONE     ctermbg=17    ctermfg=NONE    cterm=NONE
+highlight   DiffText         guibg=#000080     guifg=NONE      gui=NONE     ctermbg=0      ctermfg=NONE    cterm=NONE
+highlight   DiffAdd          guibg=#262626     guifg=NONE      gui=NONE     ctermbg=0      ctermfg=NONE    cterm=NONE
 highlight   DiffChange       guibg=#262626     guifg=NONE      gui=NONE     ctermbg=235    ctermfg=NONE    cterm=NONE
 
-highlight   GroupMembers     guibg=NONE        guifg=White     gui=bold     ctermbg=NONE   ctermfg=15      cterm=bold
+highlight   GroupMembers     guibg=NONE        guifg=#AF87FF   gui=NONE     ctermbg=NONE   ctermfg=141     cterm=bold
 highlight   Enums            guibg=NONE        guifg=#dfaf87   gui=NONE     ctermbg=NONE   ctermfg=180     cterm=NONE
 highlight   Namespace        guibg=NONE        guifg=#af5fff   gui=NONE     ctermbg=NONE   ctermfg=135     cterm=NONE
 highlight   NamespaceMembers guibg=#121212     guifg=#AF87FF   gui=NONE     ctermbg=NONE   ctermfg=141     cterm=NONE
@@ -61,7 +82,7 @@ highlight GitGutterChange guifg=#bbbb00 ctermfg=3
 highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 
 "--------------------------------------------------------------------------------------------------
-" CCLS highlight groups
+" LSP highlight groups
 " To check type under cursor :LspCxxHlCursorSym
 "
 " Class Member variables
@@ -95,7 +116,6 @@ hi def link LspCxxHlSymFileVariable Globals
 hi def link LspCxxHlSymFileStatic Globals
 hi def link LspCxxHlSymFileConstant Globals
 hi def link LspCxxHlSymFileFunction Globals
-
 
 " Color references
 if 0

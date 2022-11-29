@@ -1,7 +1,8 @@
 " Create the cells
 
 set noexpandtab
-set list lcs=tab:__
+"set list lcs=tab:__
+set list lcs=tab:\ \ 
 
 let g:cellWidth = 15
 
@@ -61,8 +62,8 @@ highlight LineNr    guifg=darkred  ctermfg=203
 highlight FirstLine cterm=bold cterm=underline ctermfg=203
 match FirstLine /\%1l./
 
-highlight TheRest cterm=underline
-2match TheRest /\%>1l\(\t\)\@!/
+"highlight TheRest cterm=underline
+"2match TheRest /\%>1l\(\t\)\@!/
 
 " Create more rows
 map <F2> :r ~/.vim/templates/template.tsv<CR>

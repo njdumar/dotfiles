@@ -124,9 +124,13 @@
             git tag -f SQUASHED_COMMIT;\
             git checkout ${currentBranch#heads/};\
             echo;\
+            echo 'Example push to Gerrit:';\
+            echo 'Draft:  git push origin SQUASHED_COMMIT:refs/drafts/main';\
+            echo 'Review: git push origin SQUASHED_COMMIT:refs/for/main';\
         else\
             echo '';\
             echo 'Supply the branch name you are merging into';\
+            echo 'Example: git automerge origin/main';\
         fi;\
         }; f"
 
