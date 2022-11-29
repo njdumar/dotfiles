@@ -56,7 +56,10 @@ if $install; then
     sudo pacman -S --noconfirm --needed base-devel gvim neovim libusb libusb-compat git tig yay tmux terminator alacritty keychain
 
     # Utilities
-    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl dmenu pipewire pipewire-alsa pipewire-docs
+    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl dmenu pipewire pipewire-alsa pipewire-docs balena-etcher
+
+    # Media
+    yay -S --noconfirm --needed spotify steam
 
     # Fonts
     yay -S --noconfirm --needed ttf-dejavu ttf-iosevka
@@ -65,7 +68,7 @@ if $install; then
     yay -S --noconfirm --needed go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl
 
     # Random tools
-    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop tree alacritty-themes libreoffice-fresh
+    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop tree alacritty-themes libreoffice-fresh repetier-host
 
     # Trash tools
     yay -S --noconfirm --needed teams tcl
