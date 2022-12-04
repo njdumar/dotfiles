@@ -1,6 +1,19 @@
 #!/bin/bash
 
+#--------------------------------------------------------------------
+# Arch linux install script
+#    - Install all packages needed for developement
+#    - If dotfiles or config are provided, link them all
+#    - Set up system for remote developement
+#--------------------------------------------------------------------
+
 set -e
+
+#----------------------------------------
+# Get all the user prompts out of the way
+#----------------------------------------
+install=false
+linkDotfiles=false
 
 if [[ $(id -u) -eq 0 ]] ; then
     echo "Do not run this script as root"
@@ -8,10 +21,6 @@ if [[ $(id -u) -eq 0 ]] ; then
 fi
 
 read -p "Enter your email address: " email
-
-configure=false
-install=false
-clones=false
 
 while true; do
     read -p "Do you wish to install all programs? [y/n]" yn
@@ -23,28 +32,63 @@ while true; do
 done
 
 while true; do
-    read -p "Do you wish to configure the system (link dotfiles, etc.)? [y/n]" yn
+    read -p "Do you wish to link existing dotfiles that already exist (eg. clone containing all your dotfiles)? [y/n]" yn
     case $yn in
-        [Yy]* ) configure=true; break;;
-        [Nn]* ) configure=false; break;;
+        [Yy]* ) linkDotfiles=true; break;;
+        [Nn]* ) linkDotfiles=false; break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
 
-cloneDir=`pwd`
+dotfilesDir=`pwd`
+dotfiles=$(find . -maxdepth 1 -name ".*" -type f -printf '%P\n')
+configs=$(find .config/ -type f)
 
-#------------------
+if [ $linkDotfiles ]; then
+    if [[ (-z $dotfiles && -z $configs) || $dotfilesDir -ef ~ ]]; then
+        echo
+        echo "No dotfiles or .config/ files found here: ${dotfilesDir}"
+        echo
+        echo ""
+        echo
+        read -p "Please enter the full path to your dotfiles folder eg. /home/user/dotfiles: " dotfilesDir
+
+        if [ ! -d $dotfilesDir]; then
+            echo "This directory does not exist : ${dotfilesDir}"
+            exit 1
+        fi
+
+        pushd $dotfilesDir
+        dotfiles=$(find . -maxdepth 1 -name ".*" -type f -printf '%P\n')
+        configs=$(find .config/ -type f)
+        popd
+
+        if [[ -z $dotfiles && -z $configs ]]; then
+            echo "No dotfiles or .config/ files found here: ${dotfilesDir}"
+            exit 1
+        fi
+
+        if [ $dotfilesDir -ef ~ ]; then
+            echo
+            echo "This is being run from the home directory, can't symlink files. Try again, but do it better"
+            exit 1
+        fi
+    fi
+fi
+
+#--------------------------------------------
 # Generate SSH keys
-#------------------
+#--------------------------------------------
 if [ ! -f ~/.ssh/id_rsa ]; then
-    echo "Generate ssh keys to upload to git servers"
+    echo
+    echo "Generate ssh keys"
     echo
     ssh-keygen -t rsa -C $email
 fi
 
-#---------------------------
+#--------------------------------------------
 # Package installation
-#---------------------------
+#--------------------------------------------
 if $install; then
     echo "Installing all packages for the system"
     echo
@@ -56,7 +100,8 @@ if $install; then
     sudo pacman -S --noconfirm --needed base-devel gvim neovim libusb libusb-compat git tig yay tmux terminator alacritty keychain
 
     # Utilities
-    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl dmenu pipewire pipewire-alsa pipewire-docs balena-etcher
+    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl blueman
+    yay -S --noconfirm --needed dmenu pipewire pipewire-alsa pipewire-docs balena-etcher
 
     # Media
     yay -S --noconfirm --needed spotify steam
@@ -68,10 +113,7 @@ if $install; then
     yay -S --noconfirm --needed go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl
 
     # Random tools
-    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop tree alacritty-themes libreoffice-fresh repetier-host
-
-    # Trash tools
-    yay -S --noconfirm --needed teams tcl
+    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop tree alacritty-themes libreoffice-fresh remmina repetier-host
 
     # Install and start docker
     # If the service fails to start up, complaining about a bridge adapter not installed, may need to reboot after a new kernel
@@ -91,88 +133,90 @@ if $install; then
     sudo modprobe vboxdrv
 fi
 
-if ! $configure; then
-    exit 1
-fi
+if $linkDotfiles; then
 
-#-----------------------------
-# Link to dotfiles and configs
-#-----------------------------
-echo
-echo "Create symlinks for dotfiles"
+    #--------------------------------------------
+    # Link to dotfiles and configs that exist
+    #--------------------------------------------
+    echo
+    echo "Create symlink for .vim/"
 
-# Create symlinks for all dotfiles
-dotfiles=$(find . -maxdepth 1 -name ".*" -type f -printf '%P\n')
-configs=$(find .config/ -type f)
-
-# Deal with .vim/ seperately as the only folder to symlink
-if [ -d ${cloneDir}/.vim ] && [ ! -L ~/.vim ]; then
-    rm -rf ~/.vim
-    ln -s ${cloneDir}/.vim ~/.vim
-fi
-
-pushd ~
-
-for file in $dotfiles; do
-
-    # skip this clone's specific dotfiles
-    if [ $file == ".gitignore" ] || [ $file == ".gitmodules" ]; then
-        continue
+    # Deal with .vim/ seperately as the only folder to symlink
+    if [ -d ${dotfilesDir}/.vim ] && [ ! -L ~/.vim ]; then
+        rm -rf ~/.vim
+        ln -s ${dotfilesDir}/.vim ~/.vim
     fi
 
-    if [ ! -L $file ] && [ ! -f $file ]; then
-        ln -s ${cloneDir}/${file} ${file}
+    echo
+    echo "Create symlinks for dotfiles"
+
+    for file in $dotfiles; do
+
+        # skip the clone's specific dotfiles
+        if [ $file == ".gitignore" ] || [ $file == ".gitmodules" ]; then
+            continue
+        fi
+
+        if [ ! -L ~/${file} ] && [ ! -f ~/${file} ]; then
+            ln -s ${dotfilesDir}/${file} ~/${file}
+        fi
+    done
+
+    echo
+    echo "Create symlinks for configs"
+
+    # Create symlinks for all config files
+    for file in $configs; do
+
+        dir=$(dirname "$file")
+        base=$(basename "$file")
+
+        # Make sure the config's folder path exists eg. ~/.config/i3/
+        if [ ! -d ~/$dir ]; then
+            mkdir ~/$dir
+        fi
+
+        if [ ! -L ~/${file} ] && [ ! -f ~/${file} ]; then
+            ln -s ${dotfilesDir}/${file} ~/${file}
+        fi
+    done
+
+    # Get themes for alacritty
+    if [ ! -d ~/.config/alacritty ]; then
+        mkdir ~/.config/alacritty
     fi
-done
-
-echo
-echo "Create symlink for .vim/"
-
-echo
-echo "Create symlinks for configs"
-
-# Create symlinks for all config files
-for file in $configs; do
-
-    dir=$(dirname "$file")
-
-    if [ ! -d $dir ]; then
-        mkdir $dir
+    if [ ! -d ~/.config/alacritty/tempus-themes ]; then
+        git clone https://gitlab.com/protesilaos/tempus-themes-alacritty.git ~/.config/alacritty/tempus-themes
     fi
 
-    if [ ! -L $file ] && [ ! -f $file ]; then
-        ln -s ${cloneDir}/${file} ${file}
+    #--------------------------------------------
+    # Install tmux plugin system
+    #--------------------------------------------
+    pushd ~
+    if [ ! -d ~/.tmux/plugins/tpm ]; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     fi
-done
+    ./.tmux/plugins/tpm/scripts/install_plugins.sh
+    popd
 
-popd
-
-# Get themes for alacritty
-if [ ! -d ~/.config/alacritty ]; then
-    mkdir ~/.config/alacritty
+    #--------------------------------------------
+    # Install all vim plugins
+    #--------------------------------------------
+    echo
+    echo 'Installing Plugs for vim.'
+    vim -c ":PlugInstall" -c ":qa"
+    echo
 fi
-if [ ! -d ~/.config/alacritty/tempus-themes ]; then
-    git clone https://gitlab.com/protesilaos/tempus-themes-alacritty.git ~/.config/alacritty/tempus-themes
-fi
-
-#---------------------------
-# Set up tmux
-#---------------------------
-pushd ~
-if [ ! -d ~/.tmux/plugins/tpm ]; then
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
-./.tmux/plugins/tpm/scripts/install_plugins.sh
-popd
 
 #--------------------------------------------
-# .bashrc
+# .bashrc updates
 #--------------------------------------------
 echo
 echo "Update .bashrc"
 
 if ! grep --quiet "bash_aliases" ~/.bashrc; then
-    echo "source ~/.bash_aliases" >> ~/.bashrc
+    echo "if [ -f ~/.bash_aliases ]; then source ~/.bash_aliases; fi" >> ~/.bashrc
+    echo "if [ -f ~/.bash_other ]; then source ~/.bash_other; fi" >> ~/.bashrc
 fi
 
 #--------------------------------------------
@@ -202,20 +246,9 @@ git config --global merge.ff false
 git config --global fetch.prune true
 git config --global core.warnambiguousrefs false
 
-#---------------------------
-# Install all vim bundles
-#---------------------------
-echo
-echo 'Installing Plugs for vim.'
-vim -c ":PlugInstall" -c ":qa"
-echo
-
-#---------------------------
+#--------------------------------------------
 # ssh server setup
-#---------------------------
-echo
-echo "******* Setup SSH for remote connections and X11 forwarding? [yn]"
-
+#--------------------------------------------
 sudo sh -c 'echo "AllowTcpForwarding yes
 X11UseLocalHost yes
 X11DisplayOffset 10 " >> /etc/ssh/sshd_config'
