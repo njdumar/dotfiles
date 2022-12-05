@@ -98,14 +98,15 @@ if $install; then
 
     # Essentials
     sudo pacman -S --noconfirm --needed base-devel yay
-    yay -S --noconfirm --needed tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3 dmenu
+    yay -S --noconfirm --needed tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3-gaps dmenu
 
     # Utilities
     yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl blueman dunst bash-completion
     yay -S --noconfirm --needed pipewire pipewire-alsa pipewire-docs arandr samba rsync easyeffects btop
 
     # Media
-    yay -S --noconfirm --needed spotify steam
+    #yay -S --noconfirm --needed spotify
+    yay -S --noconfirm --needed zenity ffmpeg4.4 steam
 
     # Fonts
     yay -S --noconfirm --needed ttf-dejavu ttf-iosevka
