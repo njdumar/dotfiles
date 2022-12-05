@@ -97,11 +97,12 @@ if $install; then
     sudo pacman -Syu --noconfirm
 
     # Essentials
-    sudo pacman -S --noconfirm --needed base-devel gvim neovim libusb libusb-compat git tig yay tmux terminator alacritty keychain
+    sudo pacman -S --noconfirm --needed base-devel yay
+    yay -S --noconfirm --needed tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3 dmenu
 
     # Utilities
-    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl blueman
-    yay -S --noconfirm --needed dmenu pipewire pipewire-alsa pipewire-docs balena-etcher
+    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl blueman dunst bash-completion
+    yay -S --noconfirm --needed pipewire pipewire-alsa pipewire-docs arandr samba rsync easyeffects btop
 
     # Media
     yay -S --noconfirm --needed spotify steam
@@ -113,7 +114,8 @@ if $install; then
     yay -S --noconfirm --needed go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl
 
     # Random tools
-    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop tree alacritty-themes libreoffice-fresh remmina repetier-host
+    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop meld feh balena-etcher vlc openscad
+    yay -S --noconfirm --needed tree alacritty-themes libreoffice-fresh remmina repetier-host supertuxkart
 
     # Install and start docker
     # If the service fails to start up, complaining about a bridge adapter not installed, may need to reboot after a new kernel

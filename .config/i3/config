@@ -262,8 +262,12 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Gaps
+# gaps inner 5
+# gaps outer 5
+
 # Lock screen
-bindsym $mod+Ctrl+l exec i3lock -i /home/amanusk/Pictures/Wallpapers/T430s_classic_blur.png -c 000000
+bindsym $mod+Ctrl+l exec i3lock -c 000000
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -277,5 +281,4 @@ for_window [class="Pavucontrol"] floating enable
 for_window [window_role="About"] floating enable
 for_window [title="Authy"] floating enable
 
-exec_always --no-startup-id xfce4-power-manager
 exec ~/.screenlayout/i3.sh

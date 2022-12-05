@@ -203,7 +203,9 @@ endif
 "normal 	g== 	Evaluate the current line
 "visual 	g= 	Evaluate the highlighted expressions
 
-let g:notes_directories = ['~/dotfiles/notes']
+if isdirectory("~/dotfiles/notes")
+    let g:notes_directories = ['~/dotfiles/notes']
+endif
 
 " Must ctrl-p for searchg for files cia fzf
 map <C-p> :GFiles <Esc>
