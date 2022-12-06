@@ -21,6 +21,7 @@ if [[ $(id -u) -eq 0 ]] ; then
 fi
 
 read -p "Enter your email address: " email
+read -p "Enter your name: " name
 
 while true; do
     read -p "Do you wish to install all programs? [y/n]" yn
@@ -211,13 +212,10 @@ echo
 echo "Git config Setup:"
 
 if [ -z "`git config --global user.name`" ]; then
-    echo "Enter your full name:"
-    read name
     git config --global user.name "$name"
 fi
+
 if [ -z "`git config --global user.email`" ]; then
-    echo "Enter your e-mail address: "
-    read email
     git config --global user.email "$email"
 fi
 
