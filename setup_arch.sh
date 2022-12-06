@@ -104,8 +104,9 @@ if $install; then
     fun='supertuxkart'
     media='zenity ffmpeg4.4 steam'
 
+    sudo pacman -Syu
     sudo pacman -S --noconfirm --needed base-devel yay
-    yay -S --noconfirm --needed $essentials $utilities $fonts $programming $random $services $fun $media
+    yay -S --noconfirm --needed $essentials $utilities $fonts $programming $random $printing $services $fun $media
 
     # Enable and start services
     sudo systemctl enable --now docker.service
