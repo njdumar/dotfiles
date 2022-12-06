@@ -14,7 +14,7 @@
     prompt = true
 [merge]
 	tool = vimdiff
-    conflictstyle = diff3
+	conflictstyle = diff3
 	renameLimit = 999999
 	ff = false
 [mergetool "mymeld"]
@@ -615,3 +615,5 @@
     #   - git update-index --no-assume-unchanged file/to/ignore.txt
 [checkout]
 	defaultRemote = origin
+[branch]
+	autosetuprebase = always
