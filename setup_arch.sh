@@ -94,11 +94,12 @@ if $install; then
     echo "Installing all packages for the system"
     echo
 
-    essentials='tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3-gaps dmenu'
-    utilities='pavucontrol pasystray network-manager-applet playerctl blueman dunst bash-completion pipewire pipewire-alsa pipewire-docs arandr samba rsync easyeffects btop'
+    essentials='tmux terminator alacritty keychain gvim neovim git tig i3-gaps dmenu bash-completion arandr samba smbclient rsync'
+    utilities='pavucontrol pasystray network-manager-applet playerctl blueman dunst pipewire pipewire-alsa pipewire-docs easyeffects btop'
     fonts='ttf-dejavu ttf-iosevka'
-    programming='go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl'
-    random='firefox chromium shutter gimp slack-desktop meld feh balena-etcher vlc openscad tree alacritty-themes libreoffice-fresh remmina repetier-host'
+    programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf'
+    random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh remmina'
+    printing='openscad repetier-host cups cups-pdf'
     services='docker docker-compose xrdp openssh virtualbox virtualbox-host-dkms linux-lts-headers'
     fun='supertuxkart'
     media='zenity ffmpeg4.4 steam'
@@ -106,16 +107,11 @@ if $install; then
     sudo pacman -S --noconfirm --needed base-devel yay
     yay -S --noconfirm --needed $essentials $utilities $fonts $programming $random $services $fun $media
 
-    # Start docker
+    # Enable and start services
     sudo systemctl enable --now docker.service
-
-    # Start remote desktop, xrdp
     sudo systemctl enable --now xrdp
-
-    # Start ssh server
     sudo systemctl enable --now sshd.service
-
-    # Start virtualbox. May require a restart?
+    systemctl enable cups.service
     sudo modprobe vboxdrv
 fi
 

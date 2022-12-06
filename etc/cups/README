@@ -1,0 +1,21 @@
+Add A Printer Using CUPS Web Interface¶
+
+    Open "Manage Printing" or browse to http://localhost:631/.
+    Click on “Administration” at the top of the web page.
+    Click on “Add Printers”.
+    Select the desired printer under "Discovered Network Printers" and click the "Continue" button.
+    Set the "Name", "Description" and "Location" and then clock on the "Continue" button.
+    Select the "Model" of printer and click the "Add Printer" button.
+    Select default options and click the "Set Default Options" button.
+
+Add A Printer Using Printer Settings¶
+
+This utilizes "Printer Settings" (system-config-printer package) a native GUI application.
+
+    Open "Printer Settings".
+    Click on the "Unlock" button.
+    Click on the "Add" button.
+    Select the desired printer and click the "Forward" button.
+    Set the desired "Printer Name", "Description" and "Location".
+    Click the "Apply" button.
+
