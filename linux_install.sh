@@ -93,46 +93,28 @@ if $install; then
     echo "Installing all packages for the system"
     echo
 
-    # Update
-    sudo pacman -Syu --noconfirm
+    essentials='tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3-gaps dmenu'
+    utilities='pavucontrol pasystray network-manager-applet playerctl blueman dunst bash-completion pipewire pipewire-alsa pipewire-docs arandr samba rsync easyeffects btop'
+    fonts='ttf-dejavu ttf-iosevka'
+    programming='go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl'
+    random='firefox chromium shutter gimp slack-desktop meld feh balena-etcher vlc openscad tree alacritty-themes libreoffice-fresh remmina repetier-host'
+    services='docker docker-compose xrdp openssh virtualbox virtualbox-host-dkms linux-lts-headers'
+    fun='supertuxkart'
+    media='zenity ffmpeg4.4 steam'
 
-    # Essentials
     sudo pacman -S --noconfirm --needed base-devel yay
-    yay -S --noconfirm --needed tmux terminator alacritty keychain gvim neovim libusb libusb-compat git tig i3-gaps dmenu
+    yay -S --noconfirm --needed $essentials $utilities $fonts $programming $random $services $fun $media
 
-    # Utilities
-    yay -S --noconfirm --needed pavucontrol pasystray network-manager-applet playerctl blueman dunst bash-completion
-    yay -S --noconfirm --needed pipewire pipewire-alsa pipewire-docs arandr samba rsync easyeffects btop
-
-    # Media
-    #yay -S --noconfirm --needed spotify
-    yay -S --noconfirm --needed zenity ffmpeg4.4 steam
-
-    # Fonts
-    yay -S --noconfirm --needed ttf-dejavu ttf-iosevka
-
-    # Programming
-    yay -S --noconfirm --needed go python python36 python-pip clang gdb ccls ctags cscope perl nodejs yarn fzf ruby perl
-
-    # Random tools
-    yay -S --noconfirm --needed firefox chromium shutter gimp slack-desktop meld feh balena-etcher vlc openscad
-    yay -S --noconfirm --needed tree alacritty-themes libreoffice-fresh remmina repetier-host supertuxkart
-
-    # Install and start docker
-    # If the service fails to start up, complaining about a bridge adapter not installed, may need to reboot after a new kernel
-    yay -S --noconfirm --needed gnome-terminal docker docker-compose
+    # Start docker
     sudo systemctl enable --now docker.service
 
-    # Install and start remote desktop, xrdp
-    yay -S --noconfirm --needed xrdp
+    # Start remote desktop, xrdp
     sudo systemctl enable --now xrdp
 
-    # Install and start ssh server
-    yay -S --noconfirm --needed openssh
+    # Start ssh server
     sudo systemctl enable --now sshd.service
 
-    # Install virtualbox. May require a restart?
-    yay -S --noconfirm --needed virtualbox virtualbox-host-dkms linux-lts-headers
+    # Start virtualbox. May require a restart?
     sudo modprobe vboxdrv
 fi
 
