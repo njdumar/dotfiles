@@ -97,7 +97,7 @@ if $install; then
     essentials='tmux terminator alacritty keychain gvim neovim git tig i3-gaps dmenu bash-completion arandr samba smbclient rsync'
     utilities='pavucontrol pasystray network-manager-applet playerctl blueman dunst pipewire pipewire-alsa pipewire-docs easyeffects btop'
     fonts='ttf-dejavu ttf-iosevka'
-    programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf'
+    programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf sshuttle'
     random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh remmina'
     printing='openscad repetier-host cups cups-pdf'
     services='docker docker-compose xrdp openssh virtualbox virtualbox-host-dkms linux-lts-headers'
