@@ -94,23 +94,25 @@ if $install; then
     echo "Installing all packages for the system"
     echo
 
-    essentials='tmux terminator alacritty keychain gvim neovim git tig i3-gaps dmenu bash-completion arandr samba smbclient rsync'
-    utilities='pavucontrol pasystray network-manager-applet playerctl blueman dunst pipewire pipewire-alsa pipewire-docs easyeffects btop'
+    essentials='tmux terminator alacritty keychain gvim neovim git tig dmenu bash-completion arandr samba smbclient rsync'
+    utilities='network-manager-applet dunst btop xclip sshuttle'
+    audio='pavucontrol pasystray playerctl blueman bluez bluez-utils pipewire pipewire-alsa pipewire-docs pipewire-pulse easyeffects'
     fonts='ttf-dejavu ttf-iosevka'
-    programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf sshuttle'
+    programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf'
     random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh remmina'
     printing='openscad repetier-host cups cups-pdf'
-    services='docker docker-compose xrdp openssh virtualbox virtualbox-host-dkms linux-lts-headers'
+    services='docker docker-compose openssh virtualbox virtualbox-host-dkms linux-lts-headers'
     fun='supertuxkart'
     media='zenity ffmpeg4.4 steam'
+    i3='i3-gaps i3status i3lock'
 
     sudo pacman -Syu
     sudo pacman -S --noconfirm --needed base-devel yay
-    yay -S --noconfirm --needed $essentials $utilities $fonts $programming $random $printing $services $fun $media
+    yay -S --noconfirm --needed $essentials $utilities $audio $fonts $programming $random $printing $services $fun $media $i3
 
     # Enable and start services
     sudo systemctl enable --now docker.service
-    sudo systemctl enable --now xrdp
+    sudo systemctl enable --now bluetooth.service
     sudo systemctl enable --now sshd.service
     systemctl enable cups.service
     sudo modprobe vboxdrv

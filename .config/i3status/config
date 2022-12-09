@@ -4,24 +4,24 @@ general {
 }
 
 order += "disk /"
-order += "ethernet eth0"
+order += "ethernet _first_"
+order += "cpu_usage"
 order += "memory"
 order += "tztime local"
 order += "volume master"
 order += "volume mic"
-order += "volume mic2"
 
-ethernet eth0 {
+disk "/" {
+        format = "%free"
+}
+
+ethernet _first_ {
         format_up = "E: %ip (%speed)"
         format_down = "E: down"
 }
 
-tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
-}
-
-load {
-        format = "%5min"
+cpu_usage {
+        format = "CPU: %usage"
 }
 
 cpu_temperature 0 {
@@ -30,13 +30,13 @@ cpu_temperature 0 {
 }
 
 memory {
-        format = "%used"
+        format = "Mem: (%used) / %total"
         threshold_degraded = "10%"
         format_degraded = "MEMORY: %free"
 }
 
-disk "/" {
-        format = "%free"
+tztime local {
+        format = "%Y-%m-%d %H:%M:%S"
 }
 
 volume master {
@@ -48,16 +48,16 @@ volume master {
 }
 
 volume mic {
-  format = "  Live"
-  format_muted = "  Muted"
+  format = "Mic  Live"
+  format_muted = "Mic  Muted"
   device = "hw:0"
   mixer = "Capture"
   mixer_idx = 0
 }
 
 volume mic2 {
-  format = "  Live"
-  format_muted = "  Muted"
+  format = "Mic  Live"
+  format_muted = "Mic  Muted"
   device = "hw:1"
   mixer = "Capture"
   mixer_idx = 0

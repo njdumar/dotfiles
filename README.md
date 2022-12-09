@@ -6,6 +6,11 @@ Install all packages, link all dotfiles/.configs, and other misc setup
 ```
 ./setup_arch.sh
 ```
+# Post Installation
+Updates to config files needed:
+  - Configure monitors via arandr and save to ~/.screenlayout/defaul.sh
+  - Monitors may have different names then what is in .config/i3/config Update it
+  - Prevent displays from turning off: xset s off -dpms
 
 # Terminal color test:
 To check if your terminal and/or tmux session supports 256 colors:

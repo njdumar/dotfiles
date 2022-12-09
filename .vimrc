@@ -48,6 +48,7 @@ set mouse=a
 
 if !has('nvim')
     set ttymouse=sgr
+    set clipboard+=unnamedplus
 endif
 
 "do not wrap lines around
