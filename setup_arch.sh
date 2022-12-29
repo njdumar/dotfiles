@@ -94,12 +94,12 @@ if $install; then
     echo "Installing all packages for the system"
     echo
 
-    essentials='tmux terminator alacritty keychain gvim neovim git tig dmenu bash-completion arandr samba smbclient rsync'
+    essentials='tmux terminator alacritty keychain gvim neovim git tig dmenu bash-completion arandr samba smbclient rsync xclip'
     utilities='network-manager-applet dunst btop xclip sshuttle'
     audio='pavucontrol pasystray playerctl blueman bluez bluez-utils pipewire pipewire-alsa pipewire-docs pipewire-pulse easyeffects'
     fonts='ttf-dejavu ttf-iosevka'
     programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf'
-    random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh remmina peek'
+    random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh xrdp remmina freerdp peek the_silver_searcher'
     printing='openscad repetier-host cups cups-pdf'
     services='docker docker-compose openssh virtualbox virtualbox-host-dkms linux-lts-headers'
     fun='supertuxkart'
@@ -109,6 +109,14 @@ if $install; then
     sudo pacman -Syu
     sudo pacman -S --noconfirm --needed base-devel yay
     yay -S --noconfirm --needed $essentials $utilities $audio $fonts $programming $random $printing $services $fun $media $i3
+
+    # Allow remote desktop in firewall
+    sudo firewall-cmd --add-port=3389/tcp --permanent || true
+    sudo firewall-cmd --reload || true
+
+    # Docker group permissions
+    sudo groupadd docker || true
+    sudo usermod -aG docker $USER || true
 
     # Enable and start services
     sudo systemctl enable --now docker.service
