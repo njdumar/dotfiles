@@ -99,7 +99,7 @@ if $install; then
     audio='pavucontrol pasystray playerctl blueman bluez bluez-utils pipewire pipewire-alsa pipewire-docs pipewire-pulse easyeffects'
     fonts='ttf-dejavu ttf-iosevka'
     programming='go python python36 python-pip clang gdb ccls ctags cscope nodejs yarn fzf'
-    random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh xrdp remmina freerdp peek the_silver_searcher'
+    random='firefox chromium shutter gimp slack-desktop meld feh vlc tree alacritty-themes libreoffice-fresh xrdp remmina freerdp peek the_silver_searcher xbanish'
     printing='openscad repetier-host cups cups-pdf'
     services='docker docker-compose openssh virtualbox virtualbox-host-dkms linux-lts-headers'
     fun='supertuxkart'

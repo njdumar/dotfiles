@@ -283,3 +283,4 @@ for_window [window_role="About"] floating enable
 for_window [title="Authy"] floating enable
 
 exec ~/.screenlayout/default.sh
+exec xbanish
