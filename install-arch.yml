@@ -1,6 +1,6 @@
 - name: install-arch.yml - archlinux base setup
   hosts: localhost
-  become: yes
+  become: no
 
   tasks:
 
@@ -24,12 +24,14 @@
 
     # System Update --------------------------------------
     - name: update system
+      become: yes
       pacman:
         update_cache: yes
         upgrade: yes
 
     # Package Installation --------------------------------------
     - name: install packages
+      become: yes
       pacman:
         update_cache: yes
         name:
@@ -125,30 +127,35 @@
 
     # Start Services ---------------------------------------------------
     - name: Start ssh service
+      become: yes
       systemd:
         name: sshd
         enabled: yes
         state: started
 
     - name: Start docker service
+      become: yes
       systemd:
         name: docker
         enabled: yes
         state: started
 
     - name: Start xrdp service
+      become: yes
       systemd:
         name: xrdp
         enabled: yes
         state: started
 
     - name: Start bluetooth service
+      become: yes
       systemd:
         name: bluetooth
         enabled: yes
         state: started
 
     - name: Start cups service
+      become: yes
       systemd:
         name: cups
         enabled: yes
@@ -156,16 +163,19 @@
 
     # Virtualbox Setup --------------------------------------------------
     - name: Add the vboxdrv module
+      become: yes
       community.general.modprobe:
         name: vboxdrv
         state: present
 
     - name: Ensure group "docker" exists
+      become: yes
       ansible.builtin.group:
         name: docker
         state: present
 
     - name: Adding existing user '{{ ansible_user }}' to group docker
+      become: yes
       user:
         name: '{{ ansible_user }}'
         groups: docker
@@ -173,6 +183,7 @@
 
     # Remote Desktop Firewall Config -----------------------------------
     - name: permit remote desktop port traffic
+      become: yes
       ansible.posix.firewalld:
         port: 3389/tcp
         permanent: yes
