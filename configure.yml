@@ -6,9 +6,11 @@
 
     - name: "user_name"
       prompt: "Enter your full name eg. John Smith"
+      private: false
 
     - name: "email"
       prompt: "Enter your email eg. John.Smith@email.com"
+      private: false
 
     - name: "ssh_passphrase"
       prompt: "Enter the passphrase for the SSH key"
@@ -35,15 +37,14 @@
         generate_ssh_key: yes
         ssh_key_type: rsa
         ssh_key_bits: 4096
-        ssh_key_file: .ssh/{{ ssh_key_filename }}
+        ssh_key_file: .ssh/id_rsa
         ssh_key_passphrase: "{{ ssh_passphrase }}"
         force: no
 
     # Install all vim plugins -----------------------------
     - name: Install vim Plug plugins, if any
-        ansible.builtin.shell:
-          cmd: vim -c ":PlugInstall" -c ":qa"
-          ignore_errors: true
+      ansible.builtin.shell:
+        cmd: vim -c ":PlugInstall" -c ":qa"
 
     # Tmux plugin setup -----------------------------
     - name: Clone the tmux plugin repository
