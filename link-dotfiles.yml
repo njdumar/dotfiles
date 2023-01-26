@@ -1,0 +1,55 @@
+- name: link-dotfiles.yml - link dotfiles
+  hosts: localhost
+  become: no
+
+  tasks:
+
+    # Link all dotfiles found in ~/dotfiles --------------------------------------
+    - name: Find dotfiles in "~/dotfiles"
+      find:
+        paths: ~/dotfiles
+        recurse: no
+        file_type: file
+        patterns: "\\..*"
+        hidden: true
+        use_regex: yes
+        excludes: '.gitignore'
+      register: dotfiles
+
+    - name: Create symlinks to ~/
+      file:
+        src: "{{ item.path }}"
+        path: "~/{{ item.path | basename }}"
+        state: link
+      with_items: "{{ dotfiles.files }}"
+
+    # Link .vim/ folder from ~/dotfiles --------------------------------------
+    - name: Find dotfiles/.vim directory
+      stat:
+        path: ~/dotfiles/.vim
+      register: vim
+
+    - name: Create symlinks to ~/
+      file:
+        src: "~/dotfiles/.vim"
+        path: "~/.vim"
+        state: link
+      when: vim.stat.exists
+
+    # Link all .config/ files found in ~/dotfiles --------------------------------------
+    - name: Find dotfiles in "~/dotfiles/.config"
+      find:
+        paths: ~/dotfiles/.config
+        recurse: yes
+        file_type: directory
+        hidden: true
+        use_regex: yes
+        excludes: '.gitignore'
+      register: configs
+
+    - name: Create symlinks to ~/.config
+      file:
+        src: "{{ item.path }}"
+        path: "~/.config/{{ item.path | basename }}"
+        state: link
+      with_items: "{{ configs.files }}"

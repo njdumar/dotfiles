@@ -1,0 +1,118 @@
+- name: configure.yml - configure linux environment
+  hosts: localhost
+  become: no
+
+  vars_prompt:
+
+    - name: "user_name"
+      prompt: "Enter your full name eg. John Smith"
+
+    - name: "email"
+      prompt: "Enter your email eg. John.Smith@email.com"
+
+    - name: "ssh_passphrase"
+      prompt: "Enter the passphrase for the SSH key"
+      confirm: true
+      private: true
+
+  tasks:
+
+    # Bash config -------------------------------------------------
+    - name: Update bashrc to include other bash files
+      lineinfile:
+        dest: ~/.bashrc
+        line: "{{ item }}"
+        insertafter: EOF
+      with_items:
+        - "if [ -e ~/.bash_aliases ]; then source ~/.bash_aliases; fi"
+        - "if [ -e ~/.bash_other ]; then source ~/.bash_other; fi"
+
+
+    # ssh key config ----------------------------------------------
+    - name: generate SSH key
+      user:
+        name: "{{ ansible_user }}"
+        generate_ssh_key: yes
+        ssh_key_type: rsa
+        ssh_key_bits: 4096
+        ssh_key_file: .ssh/{{ ssh_key_filename }}
+        ssh_key_passphrase: "{{ ssh_passphrase }}"
+        force: no
+
+    # Install all vim plugins -----------------------------
+    - name: Install vim Plug plugins, if any
+        ansible.builtin.shell:
+          cmd: vim -c ":PlugInstall" -c ":qa"
+          ignore_errors: true
+
+    # Tmux plugin setup -----------------------------
+    - name: Clone the tmux plugin repository
+      git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: ~/.tmux/plugins/tpm
+        clone: yes
+        update: yes
+
+    # Git config -------------------------------------------------
+    - name: setup git name
+      git_config:
+        name: user.name
+        scope: global
+        value: "{{ user_name }}"
+
+    - name: setup git user email
+      git_config:
+        name: user.email
+        scope: global
+        value: "{{ email }}"
+
+    - name: setup git configs
+      git_config:
+        name: pull.rebase
+        scope: global
+        value: true
+
+    - git_config:
+        name: branch.autosetuprebase
+        scope: global
+        value: always
+
+    - git_config:
+        name: rerere.enabled
+        scope: global
+        value: true
+
+    - git_config:
+        name: diff.renameLimit
+        scope: global
+        value: 999999
+
+    - git_config:
+        name: diff.mergeLimit
+        scope: global
+        value: 999999
+
+    - git_config:
+        name: merge.conflictstyle
+        scope: global
+        value: diff3
+
+    - git_config:
+        name: merge.ff
+        scope: global
+        value: false
+
+    - git_config:
+        name: fetch.prune
+        scope: global
+        value: true
+
+    - git_config:
+        name: core.warnambiguousrefs
+        scope: global
+        value: false
+
+    - git_config:
+        name: checkout.defaultRemote
+        scope: global
+        value: origin
