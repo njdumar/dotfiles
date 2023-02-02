@@ -1,15 +1,7 @@
-if [ -f ~/.bash_other ] ; then
-    source ~/.bash_other
-fi
-
 # eval $(keychain --eval --quiet id_ed25519 id_rsa ~/.keys/my_custom_key)
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
   ssh-add
-fi
-
-if [ -f /usr/bin/nvim ] ; then
-    alias vim=nvim
 fi
 
 # Better ctrl-r replacement
@@ -28,7 +20,6 @@ stty -ixon
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias ide='vim --servername IDE'
 
 SVN_EDITOR=vim
 export SVN_EDITOR
