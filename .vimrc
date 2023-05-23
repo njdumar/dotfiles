@@ -138,22 +138,28 @@ call plug#begin('~/.vim/plugged')
 "-----------------
 " coc.nvim plugins
 "-----------------
-Plug 'neoclide/coc.nvim', {'branch': 'release',  'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
  " Really only for the :CclsCallHierarchy and :CclsDerivedHierarchy tool to get nice trees
-Plug 'm-pilia/vim-ccls', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
+Plug 'm-pilia/vim-ccls'
 
  " Used for semantic highlighting
-Plug 'jackguo380/vim-lsp-cxx-highlight', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Something like tagbar
-Plug 'liuchengxu/vista.vim', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
+Plug 'liuchengxu/vista.vim'
 
 " status line plugin
  Plug 'itchyny/lightline.vim'
 "-----------------
 " ^ coc.nvim plugins
 "-----------------
+
+if has('nvim')
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
+    " :TSInstall go python query
+endif
 
 Plug 'guns/xterm-color-table.vim'
 Plug 'tpope/vim-dispatch'
@@ -184,8 +190,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-nightfly-colors'
 Plug 'rose-pine/neovim'
 Plug 'EdenEast/nightfox.nvim'
+Plug 'fatih/molokai'
 
-"Plug 'vim-scripts/git-time-lapse'
 "Plug 'kshenoy/vim-signature'
 
 call plug#end()
@@ -216,6 +222,16 @@ let python_highlight_all = 1
 "----------------------------------------
 " Golang settings
 "----------------------------------------
+" disable all linters as that is taken care of by coc.nvim
+let g:go_diagnostics_enabled = 0
+let g:go_metalinter_enabled = []
+
+" don't jump to errors after metalinter is invoked
+let g:go_jump_to_error = 0
+
+" run go imports on file save
+let g:go_fmt_command = "goimports"
+
 let g:go_fmt_autosave = 1
 let g:go_imports_autosave = 0
 let g:go_term_mode = "split"
@@ -229,6 +245,12 @@ let g:go_highlight_operators = 1
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_generate_tags = 1
 
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>i  <Plug>(go-install)
@@ -436,10 +458,10 @@ syntax enable
 " Custom colorscheme and other vim configurations
 if has('gui_running')
     set background=dark
-    colorscheme natecolors
+    colorscheme jewel
 else
     set background=dark
-    colorscheme natecolors
+    colorscheme jewel
 endif
 
 "-----------------------------------------------------------------------------
@@ -552,22 +574,18 @@ nnoremap <silent> <F3> :call SynGroup()<CR>
 
 set autoread
 
-map <F1> :term<CR>
+map <F1> :split term<CR>
 map <F2> :NERDTreeToggle<CR>
-
+map <F3> :CclsCallHierarchy<CR>
+map <F4> :CclsDerivedHierarchy<CR>
 nnoremap <F5> :redraw!<CR>
-
+map <F6> :Vista coc<CR>
 map <F8> :tabnew<CR>
 map <C-F8> :tabclose<CR>
 map <F9> :call SynGroup()<CR>
-
-" Show highlight group for thing under cursor
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'. synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-map <F3> :CclsCallHierarchy<CR>
-map <F4> :CclsDerivedHierarchy<CR>
-map <F11> :Vista coc<CR>
-map <F12> :call AddCclsProject()<CR>
+map <F11> :TSHighlightCapturesUnderCursor<CR>
+map <F12> :LspCxxHlCursorSym<CR>
 
 " Needs to be at the end for git-gutter
 highlight clear SignColumn
