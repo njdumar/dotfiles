@@ -264,8 +264,8 @@ if has('nvim')
     call s:hi('@operator',              s:red1,     '',         '',        '')
     call s:hi('@punctuation',           s:red1,     '',         '',        '')
     call s:hi('@repeat',                s:red1,     '',         '',        '')
-    call s:hi('@symbol',                a:green0,   '',         '',        '')
-    call s:hi('@exception',             a:red0,     '',         '',        '')
+    call s:hi('@symbol',                s:green0,   '',         '',        '')
+    call s:hi('@exception',             s:red0,     '',         '',        '')
 endif
 " }}}
 
