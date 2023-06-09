@@ -90,7 +90,8 @@ set guioptions-=L
 
 set tabpagemax=100
 
-set foldmethod=manual
+set foldmethod=marker
+set foldmarker={{{,}}}
 
 set clipboard+=unnamed
 
