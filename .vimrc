@@ -192,6 +192,7 @@ Plug 'bluz71/vim-nightfly-colors'
 Plug 'rose-pine/neovim'
 Plug 'EdenEast/nightfox.nvim'
 Plug 'fatih/molokai'
+Plug 'mhinz/vim-startify'
 
 "Plug 'kshenoy/vim-signature'
 
@@ -452,9 +453,10 @@ function! Ctags()
 endfunction
 
 "-----------------------------------------------------------------------------
-" Color scheme
+" Color scheme and such
 "-----------------------------------------------------------------------------
 syntax enable
+set hlsearch
 
 " Custom colorscheme and other vim configurations
 if has('gui_running')
@@ -575,7 +577,14 @@ nnoremap <silent> <F3> :call SynGroup()<CR>
 
 set autoread
 
-map <F1> :split term<CR>
+map <F1> :term<CR>
+
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+else
+    tnoremap <ESC> <C-w>
+endif
+
 map <F2> :NERDTreeToggle<CR>
 map <F3> :CclsCallHierarchy<CR>
 map <F4> :CclsDerivedHierarchy<CR>

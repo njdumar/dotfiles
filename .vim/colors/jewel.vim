@@ -34,10 +34,16 @@ syn region Comment start=/"""/ end=/"""/
 
 set background=dark
 
+if !exists("g:syntax_on")
+    syntax enable
+endif
+
 "Set the number of terminal colors to 256, this will work on most systems
-"set t_Co=256
+set t_Co=256
+
 " Colors {{{
 let s:none   = ['NONE', 'NONE']
+let s:white  = ['#ffffff', '15']
 let s:black  = ['#000000', '0']
 let s:base   = ['#121212', '233']
 let s:base00 = ['#1b2b34', '235']
@@ -67,15 +73,9 @@ let s:purple2 = ['#AF87FF', '141']
 let s:purple3 = ['#af5fff', '135']
 let s:purple4 = ['#ff87ff', '213']
 let s:purple5 = ['#ff00af', '199']
-
-let s:white  = ['#ffffff', '15']
-let s:none   = ['NONE',    'NONE']
 " }}}
 
-syntax on
-set hlsearch
-
-" Vim {{
+" Vim {{{
 call s:hi('Bold',              '',         '',         s:bold,       '')
 call s:hi('Italic',            '',         '',         s:italic,     '')
 call s:hi('Normal',            s:base04,   s:base,     '',           '')
@@ -157,7 +157,6 @@ call s:hi('vimVar',       s:purple0,  '',  '',  '')
 call s:hi('vimMapLhs',    s:purple0,  '',  '',  '')
 call s:hi('vimMapRhs',    '',         '',  '',  '')
 call s:hi('vimSetEqual',  s:red0,     '',  '',  '')
-
 " }}}
 
 " Random Plugins {{{
@@ -274,6 +273,12 @@ endif
 " }}}
 
 " TODO Others {{{
+" xml
+" TeX
+" Perl
+" markdown
+" go
+"
 "call s:hi('Macro',         '',  '',            '',  '')
 "call s:hi('ModeMsg',       '',  '',            '',  '')
 "call s:hi('MoreMsg',       '',  '',            '',  '')
