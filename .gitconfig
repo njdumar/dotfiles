@@ -10,6 +10,7 @@
 [diff]
     tool = bc4
 	renameLimit = 999999
+	mergeLimit = 999999
 [difftool]
     prompt = true
 [merge]

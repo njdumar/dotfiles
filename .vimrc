@@ -48,7 +48,6 @@ set mouse=a
 
 if !has('nvim')
     set ttymouse=sgr
-    set clipboard+=unnamedplus
 endif
 
 "do not wrap lines around
@@ -139,15 +138,19 @@ call plug#begin('~/.vim/plugged')
 "-----------------
 " coc.nvim plugins
 "-----------------
+"Plug 'neoclide/coc.nvim', {'branch': 'release',  'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
- " Really only for the :CclsCallHierarchy and :CclsDerivedHierarchy tool to get nice trees
+" Really only for the :CclsCallHierarchy and :CclsDerivedHierarchy tool to get nice trees
+"Plug 'm-pilia/vim-ccls', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
 Plug 'm-pilia/vim-ccls'
 
- " Used for semantic highlighting
-Plug 'jackguo380/vim-lsp-cxx-highlight'
+ " Used for semantic highlighting. nvim uses tree-sitter
+"Plug 'jackguo380/vim-lsp-cxx-highlight', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
+ Plug 'jackguo380/vim-lsp-cxx-highlight', !has('nvim') ? {} : { 'on': [] }
 
 " Something like tagbar
+"Plug 'liuchengxu/vista.vim', {'for': ['cpp', 'python', 'go', 'tcl', 'typescript', 'json']}
 Plug 'liuchengxu/vista.vim'
 
 " status line plugin
@@ -155,12 +158,6 @@ Plug 'liuchengxu/vista.vim'
 "-----------------
 " ^ coc.nvim plugins
 "-----------------
-
-if has('nvim')
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-treesitter/playground'
-    " :TSInstall go python query
-endif
 
 Plug 'guns/xterm-color-table.vim'
 Plug 'tpope/vim-dispatch'
@@ -179,8 +176,15 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'arecarn/vim-crunch'
 Plug 'airblade/vim-gitgutter'
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'junegunn/fzf'
+Plug 'mhinz/vim-startify'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+
+if has('nvim')
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
+    " :TSInstall query python go cpp
+endif
 
 " Color schemes
 Plug 'rakr/vim-one'
@@ -191,11 +195,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-nightfly-colors'
 Plug 'rose-pine/neovim'
 Plug 'EdenEast/nightfox.nvim'
-Plug 'fatih/molokai'
-Plug 'mhinz/vim-startify'
-
-"Plug 'kshenoy/vim-signature'
-
 call plug#end()
 
 " Set these now, required for the colorizer plugin setup
@@ -212,9 +211,7 @@ endif
 "normal 	g== 	Evaluate the current line
 "visual 	g= 	Evaluate the highlighted expressions
 
-if isdirectory("~/dotfiles/notes")
-    let g:notes_directories = ['~/dotfiles/notes']
-endif
+let g:notes_directories = ['~/dotfiles/notes']
 
 " Must ctrl-p for searchg for files cia fzf
 map <C-p> :GFiles <Esc>
@@ -224,16 +221,6 @@ let python_highlight_all = 1
 "----------------------------------------
 " Golang settings
 "----------------------------------------
-" disable all linters as that is taken care of by coc.nvim
-let g:go_diagnostics_enabled = 0
-let g:go_metalinter_enabled = []
-
-" don't jump to errors after metalinter is invoked
-let g:go_jump_to_error = 0
-
-" run go imports on file save
-let g:go_fmt_command = "goimports"
-
 let g:go_fmt_autosave = 1
 let g:go_imports_autosave = 0
 let g:go_term_mode = "split"
@@ -247,12 +234,6 @@ let g:go_highlight_operators = 1
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_generate_tags = 1
 
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>i  <Plug>(go-install)
@@ -268,7 +249,7 @@ let g:gitgutter_eager = 0
 "------------------------------------------------------------------------------------------------------------
 " coc.nvim
 "------------------------------------------------------------------------------------------------------------
-let g:coc_global_extensions = ['coc-json', 'coc-go', 'coc-pairs', 'coc-spell-checker', 'coc-yank', 'coc-pyright']
+let g:coc_global_extensions = ['coc-json', 'coc-go', 'coc-pairs', 'coc-spell-checker', 'coc-yank', '@yaegassy/coc-ruff', 'coc-pyright', 'coc-sh', 'coc-rust-analyzer']
 
 " For the coc-spell-checker
 vmap <leader>a <Plug>(coc-codeaction-selected)
@@ -330,7 +311,6 @@ if has('nvim')
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
@@ -453,10 +433,9 @@ function! Ctags()
 endfunction
 
 "-----------------------------------------------------------------------------
-" Color scheme and such
+" Color scheme
 "-----------------------------------------------------------------------------
 syntax enable
-set hlsearch
 
 " Custom colorscheme and other vim configurations
 if has('gui_running')
@@ -499,21 +478,7 @@ set completeopt=longest,menuone,preview
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 "-----------------------------------------------------------------------------
-"---------------------------- Some Custom Stuff ------------------------------
-"-----------------------------------------------------------------------------
-
-" Setup tsv rules, we're making a screadsheet. If this is a new file, load the
-" template, starting at line 0
-au BufNewFile,BufRead,BufEnter *.tsv set ft=tsv
-au BufNewFile *.tsv 0r ~/.vim/templates/template.tsv
-
-au BufNewFile,BufRead *.chklst set ft=chklst
-let g:checklist_use_timestamps = 0
-
-au BufNewFile *.gnt 0r ~/.vim/bundle/ganttchart/templates/template.gnt
-
-"-----------------------------------------------------------------------------
-"---------------------------Vim Functions/Mappings-----------------------------
+" Vim Functions/Mappings
 "-----------------------------------------------------------------------------
 
 inoremap jj <ESC>
@@ -563,6 +528,27 @@ map <C-i> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
           \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
           \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+"Windows GVim settings
+if has("gui_running")
+    "set the window size
+    set lines=50
+    set columns=150
+
+    behave mswin
+
+    "set the 'cpoptions' to its Vim default
+    if 1  " only do this when compiled with expression evaluation
+        let s:save_cpo = &cpoptions
+    endif
+    set cpo&vim
+
+    "backspace and allow the cursor keys wrap to previous/next line
+    set backspace=indent,eol,start whichwrap+=<,>,[,]
+
+    "backspace in Visual mode deletes selection
+    vnoremap <BS> d
+endif  "end of if has gui_running
+
 " Fold everything not being serached for
 nnoremap \z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
 
@@ -579,12 +565,6 @@ set autoread
 
 map <F1> :term<CR>
 
-if has('nvim')
-    tnoremap <Esc> <C-\><C-n>
-else
-    tnoremap <ESC> <C-w>
-endif
-
 map <F2> :NERDTreeToggle<CR>
 map <F3> :CclsCallHierarchy<CR>
 map <F4> :CclsDerivedHierarchy<CR>
@@ -592,10 +572,19 @@ nnoremap <F5> :redraw!<CR>
 map <F6> :Vista coc<CR>
 map <F8> :tabnew<CR>
 map <C-F8> :tabclose<CR>
-map <F9> :call SynGroup()<CR>
+map <F9> :call AddCclsProject()<CR>
+" Show highlight group for thing under cursor
+"map <F9> :call SynGroup()<CR>
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'. synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 map <F11> :TSHighlightCapturesUnderCursor<CR>
 map <F12> :LspCxxHlCursorSym<CR>
 
 " Needs to be at the end for git-gutter
 highlight clear SignColumn
+
+" Terminal settings
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+else
+    tnoremap <ESC> <C-w>
+endif
