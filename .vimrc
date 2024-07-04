@@ -122,7 +122,8 @@ let g:termdebug_popup = 0
 let g:termdebug_wide = 163
 
 " Vim packages
-packadd termdebug
+" NOTE: packadd already seems to be loaded, at least in vim for Arch
+"packadd termdebug
 
 "------------------------------------------------
 " Plug
