@@ -196,6 +196,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-nightfly-colors'
 Plug 'rose-pine/neovim'
 Plug 'EdenEast/nightfox.nvim'
+Plug 'fatih/molokai'
+
 call plug#end()
 
 " Set these now, required for the colorizer plugin setup
