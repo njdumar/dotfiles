@@ -125,7 +125,7 @@ let g:termdebug_wide = 163
 " NOTE: packadd already seems to be loaded, at least in vim for Arch
 "packadd termdebug
 
-"------------------------------------------------
+"------------------------------------------------let g:go_def_mapping_enabled = 0
 " Plug
 "------------------------------------------------
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -169,6 +169,7 @@ Plug 'rking/ag.vim'
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
 Plug 'fatih/vim-go'
+Plug 'charlespascoe/vim-go-syntax'
 Plug 'aklt/plantuml-syntax'
 Plug 'hdima/python-syntax'
 Plug 'chrisbra/Colorizer'
@@ -177,9 +178,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'arecarn/vim-crunch'
 Plug 'airblade/vim-gitgutter'
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'mhinz/vim-startify'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'voldikss/vim-floaterm'
 
 if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -204,6 +205,9 @@ call plug#end()
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
+
+" use coc.nvim completion instead of vim-go's
+let g:go_def_mapping_enabled = 0
 
 if has('nvim')
     lua require'colorizer'.setup()
@@ -252,7 +256,8 @@ let g:gitgutter_eager = 0
 "------------------------------------------------------------------------------------------------------------
 " coc.nvim
 "------------------------------------------------------------------------------------------------------------
-let g:coc_global_extensions = ['coc-json', 'coc-go', 'coc-pairs', 'coc-spell-checker', 'coc-yank', '@yaegassy/coc-ruff', 'coc-pyright', 'coc-sh', 'coc-rust-analyzer']
+"let g:coc_global_extensions = ['coc-json', 'coc-go', 'coc-pairs', 'coc-spell-checker', 'coc-yank', '@yaegassy/coc-ruff', 'coc-pyright', 'coc-sh', 'coc-rust-analyzer']
+let g:coc_global_extensions = ['coc-json', 'coc-spell-checker', 'coc-yank', '@yaegassy/coc-ruff', 'coc-pyright', 'coc-sh', 'coc-rust-analyzer']
 
 " For the coc-spell-checker
 vmap <leader>a <Plug>(coc-codeaction-selected)
