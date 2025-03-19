@@ -63,7 +63,8 @@ set smartcase
 
 set vb
 
-set winfixwidth
+" Setting this seems to break NERDTree resizing
+"set winfixwidth
 
 "set the font
 set guifont=DejaVu\ Sans\ Mono\ 11
