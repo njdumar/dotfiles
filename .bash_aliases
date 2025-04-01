@@ -4,6 +4,8 @@ if [ -z "$SSH_AUTH_SOCK" ] ; then
   ssh-add
 fi
 
+export GOPATH=~/go
+
 # Better ctrl-r replacement
 if [ -f /usr/share/fzf/key-bindings.bash ] ; then
     source /usr/share/fzf/key-bindings.bash
@@ -33,90 +35,42 @@ export CSCOPE_EDITOR=/usr/bin/vim
     bc -l <<< "obase=16;ans=$answer;print \" (0x\",ans,\")\\n\""
 }
 
-# Aliases for git
-alias gs='git status'
-alias gd='git diff'
-alias gdm='git diff master'
-alias gsdm='git svn-diff master'
-alias gca='git commit -am '
-alias gp='git push'
-alias gpg='git push gitlab'
-alias gss='git svn-update-all svn'
-
-alias gitVimDiff='vim -p $(git diff --name-only) -c "tabdo :Gvdiff"'
-alias gitVimPreviousDiff='vim -p $(git diff --name-only HEAD~1 HEAD) -c "tabdo :Gvdiff HEAD~1"'
-alias gitGVimDiff='gvim -p $(git diff --name-only) -c "tabdo :Gvdiff"'
-alias gitGVimPreviousDiff='gvim -p $(git diff --name-only HEAD~1 HEAD) -c "tabdo :Gvdiff HEAD~1"'
-
-gitVimDiffBranch() {
-    vim -p $(git diff --name-only $1 HEAD) -c "tabdo :Gvdiff $1"
-}
-gitGVimDiffBranch() {
-    gvim -p $(git diff --name-only $1 HEAD) -c "tabdo :Gvdiff $1"
-}
-alias gitVimDiffBranch=gitVimDiffBranch
-alias gitGVimDiffBranch=gitGVimDiffBranch
-
-# better search and replace
-sr() {
-    ag -l $1 | xargs sed -i -e "s|$1|$2|g"
-}
-
 # terminal prompt git statuses
-COLOR_RED="\033[01;31m"
-COLOR_YELLOW="\033[01;33m"
-COLOR_GREEN="\033[01;32m"
-COLOR_OCHRE="\033[38;5;95m"
-COLOR_BLUE="\033[01;34m"
-COLOR_WHITE="\033[01;37m"
-COLOR_PURPLE="\033[01;35m"
-COLOR_RESET="\033[0m"
-
-function git_color {
-  local git_status="$(git status 2> /dev/null)"
-
-  if [[ $git_status =~ "diverged" ]]; then
-    echo -e $COLOR_RED
-  elif [[ $git_status =~ "Your branch is ahead of" ]]; then
-    echo -e $COLOR_YELLOW
-  elif [[ $git_status =~ "Your branch is behind" ]]; then
-    echo -e $COLOR_BLUE
-  elif [[ $git_status =~ "Your branch is up-to-date" ]]; then
-    echo -e $COLOR_PURPLE
-  elif [[ $git_status =~ "On branch" ]]; then
-    echo -e $COLOR_PURPLE   # This is probably a git-svn clone, it tracks branches differently
-  else
-    echo -e $COLOR_OCHRE
-  fi
-}
+COLOR_RED="\001\033[01;31m\002"
+COLOR_YELLOW="\001\033[01;33m\002"
+COLOR_GREEN="\001\033[01;32m\002"
+COLOR_OCHRE="\001\033[38;5;95m\002"
+COLOR_BLUE="\001\033[01;34m\002"
+COLOR_CYAN="\001\033[01;36m\002"
+COLOR_WHITE="\001\033[01;37m\002"
+COLOR_PURPLE="\001\033[01;35m\002"
+COLOR_RESET="\001\033[0m\002"
 
 function git_branch {
   local git_status="$(git status 2> /dev/null)"
   local on_branch="On branch ([^${IFS}]*)"
   local operating_branch="currently ([^${IFS}]*) branch '([^${IFS}]*)' on"
   local on_commit="HEAD detached at ([^${IFS}]*)"
-
-  if [[ $git_status =~ $on_branch ]]; then
-    local branch=${BASH_REMATCH[1]}
-    echo "($branch)"
-  elif [[ $git_status =~ $on_commit ]]; then
-    local commit=${BASH_REMATCH[1]}
-    echo "($commit)"
-  elif [[ $git_status =~ $operating_branch ]]; then
-    local branch=${BASH_REMATCH[2]}
-    local operation=${BASH_REMATCH[1]}
-    echo "($branch | $operation)"
-  fi
-}
-
-function git_changes {
-  local git_status="$(git status 2> /dev/null)"
-
+  local interactive_rebasing="interactive rebase in progress; onto ([^${IFS}]*)"
   local git_added="$(git diff --cached --numstat 2> /dev/null | wc -l)"
   local git_dirty="$(git diff-files --diff-filter=M 2> /dev/null | wc -l)"
   local git_untracked="$(git ls-files --exclude-standard --others 2> /dev/null | wc -l)"
 
-  status=""
+  local status=""
+  local color=$COLOR_OCHRE
+
+  if [[ $git_status =~ "diverged" ]]; then
+    color=$COLOR_RED
+  elif [[ $git_status =~ "Your branch is ahead of" ]]; then
+    color=$COLOR_YELLOW
+  elif [[ $git_status =~ "Your branch is behind" ]]; then
+    color=$COLOR_PURPLE
+  elif [[ $git_status =~ "Your branch is up-to-date" ]]; then
+    color=$COLOR_BLUE
+  elif [[ $git_status =~ "On branch" ]]; then
+    color=$COLOR_BLUE
+  fi
+
   if [[ $git_added > 0 ]]; then
       status+=" $git_added staged"
   fi
@@ -127,12 +81,23 @@ function git_changes {
       status+=" $git_untracked untracked"
   fi
 
-  echo "$status"
+  if [[ $git_status =~ $on_branch ]]; then
+    local branch=${BASH_REMATCH[1]}
+    echo -e "$color($branch)$status"
+  elif [[ $git_status =~ $on_commit ]]; then
+    local commit=${BASH_REMATCH[1]}
+    echo -e "$color($commit)$status"
+  elif [[ $git_status =~ $operating_branch ]]; then
+    local branch=${BASH_REMATCH[2]}
+    local operation=${BASH_REMATCH[1]}
+    echo -e "$color($branch | $operation)$status"
+  elif [[ $git_status =~ $interactive_rebasing ]]; then
+    local commit=${BASH_REMATCH[1]}
+    echo -e "$color(Interactive Rebase: $commit)"
+  fi
 }
 
 PS1='$\[\033[01;32m\]\u@\w\[\033[00m\]: \[\033[01;35m\]'
-PS1+="\[\$(git_color)\]"
 PS1+="\$(git_branch)"
-PS1+="\$(git_changes)"
 PS1+='\[\033[00m\]\n\$ '
 export PS1
