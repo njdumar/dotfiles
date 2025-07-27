@@ -235,4 +235,5 @@ for_window [class="steam"] move to workspace $ws8
 
 exec ~/.screenlayout/default.sh
 exec xbanish
+exec xfce4-power-manager
 exec xset s off -dpms

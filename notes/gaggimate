@@ -1,0 +1,10 @@
+gaggimate
+
+To get started enter a title for your note above. When you’re ready to save
+your note just use Vim’s :write or :update commands, a filename will be picked
+automatically based on the title.
+
+                                    * * *
+# Build notes
+
+The monoblocks have numbers on them as well, which you can see after you unplug them
