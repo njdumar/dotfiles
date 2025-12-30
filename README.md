@@ -7,7 +7,8 @@ These are meant to be symlinked to the home directory.
 ## Arch
 
 Nvidia drivers can be installed automatically using `nvidia-inst` (install: `yay -Syu nvidia-inst` first).
-If a GPU is too old, `nouveau` may need to be used instead, or a manual installation if a legacy driver via `yay`.
+If a GPU is too old, `nouveau` may need to be used instead, or a manual installation if a legacy driver. For
+example: `yay -S nvidia-470xx-dkms`.
 
 # Terminal color test:
 To check if your terminal and/or tmux session supports 256 colors:
