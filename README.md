@@ -2,6 +2,13 @@
 This is a collection of configuration files, scripts, and vim plugins that I got tired of copying from machine to machine.
 These are meant to be symlinked to the home directory.
 
+# Video Drivers
+
+## Arch
+
+Nvidia drivers can be installed automatically using `nvidia-inst` (install: `yay -Syu nvidia-inst` first).
+If a GPU is too old, `nouveau` may need to be used instead, or a manual installation if a legacy driver via `yay`.
+
 # Terminal color test:
 To check if your terminal and/or tmux session supports 256 colors:
 ```
