@@ -7,16 +7,28 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "vim": {
+    "use_smartcase_find": true
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
   "terminal": {
+    "copy_on_select": true,
     "font_size": 12.0,
     "shell": {
       "with_arguments": {
-        "program": "/bin/zsh",  // or path to your preferred shell
-        "args": ["-c", "tmux new-session -A -s \"$(basename \"$PWD\")\""]
+        "program": "/usr/bin/bash",
+        "args": [
+          "-c",
+          "tmux new-session -A -s \"$(basename \"$PWD\")\""
+        ]
       }
     }
   },
   "agent": {
+    "sidebar_side": "right",
     "dock": "right",
     "favorite_models": [],
     "model_parameters": []
