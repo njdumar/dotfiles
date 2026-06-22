@@ -19,7 +19,7 @@
     "font_size": 12.0,
     "shell": {
       "with_arguments": {
-        "program": "/usr/bin/bash",
+        "program": "zsh",
         "args": [
           "-c",
           "tmux new-session -A -s \"$(basename \"$PWD\")\""
