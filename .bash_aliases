@@ -26,11 +26,7 @@ alias l='ls -CF'
 # Aliases for git
 alias gs='git status'
 alias gd='git diff'
-
-SVN_EDITOR=vim
-export SVN_EDITOR
-export EDITOR=vim
-export CSCOPE_EDITOR=/usr/bin/vim
+alias gp='git push'
 
 # Perform arithmetic easily in bash
 =() {
